@@ -8,10 +8,12 @@
 
 English | [中文](README.zh.md)
 
-A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (DSH) dynamic
-Cordis plugin that adds a **QR-code button above the Settings button** in the
-sidebar footer. It runs a small auth-gated reverse proxy so a phone on the same
-network (or the internet) can scan a QR code and open the web UI securely.
+A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (DSH) Web
+plugin that adds a **QR-code button above the Settings button** in the sidebar
+footer. It runs a small auth-gated reverse proxy so a phone on the same network
+(or the internet) can scan a QR code and open the web UI securely. It is a
+persistent bundle plugin (a host half plus a browser half) that loads on every
+boot.
 
 ## What it does
 
@@ -22,7 +24,7 @@ network (or the internet) can scan a QR code and open the web UI securely.
   - **Public internet** — `http://<public-ip>:<port>/?auth=<secret>` (blue).
 - The reverse proxy (a child `node` process on `0.0.0.0:<port>`) validates the
   secret, issues a session cookie (default 30 days), and forwards to the
-  loopback web UI.
+  loopback web UI — including WebSocket upgrades so live updates reach the phone.
 - The secret rotates every 30s by default and the QR refreshes to match
   (configurable; `0` disables auto-refresh).
 - Click a QR to copy its link; the public QR has an info tooltip.
@@ -34,24 +36,25 @@ network (or the internet) can scan a QR code and open the web UI securely.
 
 | File | Purpose |
 | --- | --- |
-| `host.js` | Host half — value for `code.host` in `cordis_define`. |
-| `client.js` | Client half — value for `code.client` in `cordis_define`. |
-| `package.json` | Package metadata (`dsh-plugin` keyword + `dsh` manifest). |
+| `lib/index.js` | Host half — runs the reverse proxy and the `/__qr/*` state routes. |
+| `lib/client.js` | Browser half — the QR button and the settings card. |
+| `lib/proxy.cjs` | The auth-gated reverse proxy child process (HTTP + WebSocket). |
+| `cordis.patch.yml` | Composition patch that inserts the plugin row. |
+| `package.json` | Package metadata (`dsh.bundle` + `dsh.client` manifest). |
 
-## Loading it
+## Install
 
-This is a **dynamic Cordis plugin**: it runs inside a live DSH session and does
-not survive a process restart. Load it from the DSH web GUI (or your agent) with
-the `cordis_define` / `cordis_run` flow:
+Mount it as a bundle in a DSH profile:
 
-1. Define a new plugin with `code.host` = the full contents of `host.js` and
-   `code.client` = the full contents of `client.js` (an `idPrefix` such as
-   `qrconn` is enough — the host allocates the final ID).
-2. Run the returned package and approve the client half in the UI.
+1. In the profile's `package.json`, add `"dsh-plugin-qr-connect": "file:/path/to/dsh-plugin-qr-connect"` to `dependencies`, and add `"dsh-plugin-qr-connect"` to `dsh.profile.bundles`.
+2. Run `pnpm install` in the profile directory.
+3. Restart `dsh web`.
 
-The two `.js` files are the **function bodies** the dynamic runner expects (they
-are not standalone Node/browser modules), so pass their contents as-is — do not
-`import` them.
+Defaults live in `cordis.patch.yml` (`port`, `sessionDays`, `refreshSeconds`).
+Change them there (or in the profile's own `cordis.patch.yml`) and restart, or
+adjust them at runtime from the settings card. The host half serves three
+same-origin routes the browser half uses: `GET /__qr/info`,
+`POST /__qr/rotate`, and `GET|POST /__qr/config`.
 
 ## Requirements
 

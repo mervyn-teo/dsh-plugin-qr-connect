@@ -8,9 +8,10 @@
 
 [English](README.md) | 中文
 
-一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）动态
-Cordis 插件：在侧边栏底部「设置」按钮上方添加一个 **二维码按钮**。它运行一个小型、
-带鉴权的反向代理，让同一网络（或公网）上的手机扫码后安全地打开 Web UI。
+一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）Web
+插件：在侧边栏底部「设置」按钮上方添加一个 **二维码按钮**。它运行一个小型、
+带鉴权的反向代理，让同一网络（或公网）上的手机扫码后安全地打开 Web UI。它是
+一个持久化的 bundle 插件（Host 半边 + 浏览器半边），每次启动都会自动加载。
 
 ## 功能
 
@@ -20,9 +21,10 @@ Cordis 插件：在侧边栏底部「设置」按钮上方添加一个 **二维�
   - **本地网络** — `http://<局域网 IP>:<端口>/?auth=<密钥>`。
   - **公网** — `http://<公网 IP>:<端口>/?auth=<密钥>`（蓝色）。
 - 反向代理（一个监听 `0.0.0.0:<端口>` 的 `node` 子进程）校验密钥，签发会话
-  Cookie（默认 30 天），然后转发到回环 Web UI。
+  Cookie（默认 30 天），然后转发到回环 Web UI —— 包括 WebSocket 升级，使实时
+  更新也能同步到手机。
 - 密钥默认每 30 秒轮换一次，二维码同步刷新（可配置，`0` 表示关闭自动刷新）。
-- 点击二维码复制对应链接；公网二维码带有信息提示（悬浮显示「公网分享」）。
+- 点击二维码复制对应链接；公网二维码带有信息提示（悬浮显示「仅在端口转发后可用」）。
 - 在 设置 → 插件 中提供 **QR connect** 配置卡片，可设置代理端口、会话时长、
   刷新间隔。
 - 通过 DSH 的 locale 服务支持英文与中文界面。
@@ -31,21 +33,26 @@ Cordis 插件：在侧边栏底部「设置」按钮上方添加一个 **二维�
 
 | 文件 | 用途 |
 | --- | --- |
-| `host.js` | Host 半边 —— `cordis_define` 中 `code.host` 的值。 |
-| `client.js` | Client 半边 —— `cordis_define` 中 `code.client` 的值。 |
-| `package.json` | 包元数据（`dsh-plugin` 关键字 + `dsh` 清单）。 |
+| `lib/index.js` | Host 半边 —— 运行反向代理与 `/__qr/*` 状态路由。 |
+| `lib/client.js` | 浏览器半边 —— 二维码按钮与配置卡片。 |
+| `lib/proxy.cjs` | 带鉴权的反向代理子进程（HTTP + WebSocket）。 |
+| `cordis.patch.yml` | 插入插件行的组合补丁。 |
+| `package.json` | 包元数据（`dsh.bundle` + `dsh.client` 清单）。 |
 
-## 加载方式
+## 安装
 
-这是一个 **动态 Cordis 插件**：运行在 DSH 会话内，进程重启后不会保留。在 DSH
-Web 界面（或由代理）通过 `cordis_define` / `cordis_run` 流程加载：
+将其作为 bundle 挂载到 DSH profile：
 
-1. 定义新插件，`code.host` = `host.js` 的完整内容，`code.client` =
-   `client.js` 的完整内容（`idPrefix` 用 `qrconn` 即可，最终 ID 由宿主分配）。
-2. 运行返回的包，并在界面中批准 Client 半边。
+1. 在 profile 的 `package.json` 中，向 `dependencies` 添加
+   `"dsh-plugin-qr-connect": "file:/path/to/dsh-plugin-qr-connect"`，并向
+   `dsh.profile.bundles` 添加 `"dsh-plugin-qr-connect"`。
+2. 在 profile 目录运行 `pnpm install`。
+3. 重启 `dsh web`。
 
-这两个 `.js` 文件是动态运行器所需的 **函数体**（不是独立的 Node/浏览器模块），
-请原样传入，不要 `import`。
+默认配置在 `cordis.patch.yml`（`port`、`sessionDays`、`refreshSeconds`）。可在
+那里（或 profile 自带的 `cordis.patch.yml`）修改后重启，或在运行时通过配置卡片
+调整。Host 半边提供三个同源路由供浏览器半边使用：`GET /__qr/info`、
+`POST /__qr/rotate` 与 `GET|POST /__qr/config`。
 
 ## 依赖
 
