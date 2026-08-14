@@ -315,7 +315,7 @@ function buildQrMatrix(text, ecl) {
   }
   return bestMatrix
 }
-function matrixToSvg(matrix, scale, margin) {
+function matrixToSvg(matrix, scale, margin, color) {
   const n = matrix.length
   const dim = (n + margin * 2) * scale
   let rects = ''
@@ -324,7 +324,8 @@ function matrixToSvg(matrix, scale, margin) {
       if (matrix[y][x]) rects += '<rect x="' + ((x + margin) * scale) + '" y="' + ((y + margin) * scale) + '" width="' + scale + '" height="' + scale + '"/>'
     }
   }
-  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + dim + ' ' + dim + '" shape-rendering="crispEdges" style="width:100%;height:100%;display:block"><rect width="' + dim + '" height="' + dim + '" fill="#ffffff"/><g fill="#000000">' + rects + '</g></svg>'
+  const c = color || '#000000'
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + dim + ' ' + dim + '" shape-rendering="crispEdges" style="width:100%;height:100%;display:block"><rect width="' + dim + '" height="' + dim + '" fill="#ffffff"/><g fill="' + c + '">' + rects + '</g></svg>'
 }
 function qrIcon() {
   const finders = [[0, 0], [9, 0], [0, 9]]
@@ -337,7 +338,7 @@ function qrIcon() {
   d += 'M10 10h2v2h-2zM13 10h2v2h-2zM10 13h2v2h-2zM13 13h2v2h-2z'
   return React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'currentColor', fillRule: 'evenodd', 'aria-hidden': 'true' }, React.createElement('path', { d: d }))
 }
-const QR_CSS = '.hHd-Xa_footerActions{flex-direction:column}.dshqr-layer{flex:none;align-items:center;width:100%;height:49px;margin:8px 0 0;display:flex;position:relative}.dshqr-buttons{align-items:center;width:100%;display:flex}.dshqr-badge{cursor:pointer;width:100%;height:49px;color:var(--dsw-alias-label-primary);background:0 0;border:none;border-radius:12px;align-items:center;gap:8px;padding:0 8px 0 6px;font-family:inherit;font-size:14px;display:inline-flex;overflow:hidden}.dshqr-badge:hover{background:var(--dsw-alias-interactive-bg-hover-solid)}.dshqr-label{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.dshqr-layer.dshqr-rail{width:36px;height:36px;margin:0}.dshqr-rail .dshqr-badge{border-radius:50%;justify-content:center;gap:0;width:36px;height:36px;padding:0}.dshqr-panel{z-index:30;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-base);width:320px;max-width:calc(100vw - 24px);box-shadow:var(--dsw-shadow-lv2);border-radius:12px;flex-direction:column;display:flex;position:fixed;bottom:128px;left:12px;overflow:hidden;animation:dshqrFadeIn 180ms ease}.dshqr-panel.dshqr-closing{animation:dshqrFadeOut 180ms ease forwards}.dshqr-header{box-sizing:border-box;border-bottom:1px solid var(--dsw-alias-border-l2);flex:none;justify-content:space-between;align-items:center;min-height:44px;padding:10px 12px;display:flex}.dshqr-title{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-close{width:24px;height:24px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:999px;font-size:18px;line-height:1;padding:0}.dshqr-close:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-body{flex:1;min-height:0;padding:14px;flex-direction:column;align-items:center;gap:14px;display:flex;max-height:calc(100vh - 180px);overflow-y:auto}.dshqr-block{flex-direction:column;align-items:center;gap:8px;display:flex;width:100%}.dshqr-qr{width:170px;height:170px;border-radius:8px;overflow:hidden;background:#fff}.dshqr-kind{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-url{color:var(--dsw-alias-label-secondary);font-size:11px;line-height:16px;word-break:break-all;text-align:center;margin:0}.dshqr-count{color:var(--dsw-alias-label-caption);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-config{border-top:1px solid var(--dsw-alias-border-l2);flex:none;width:100%;align-items:center;gap:8px;padding-top:12px;display:flex}.dshqr-configlabel{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;flex:1}.dshqr-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:64px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-apply{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 10px}.dshqr-apply:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-msg{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px;margin:0;text-align:center}.dshqr-note{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-error{color:var(--dsw-alias-state-error-primary);font-size:12px;line-height:18px;margin:0;text-align:center}@keyframes dshqrFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes dshqrFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(6px)}}.dshqr-actions{flex:none;width:100%;justify-content:center;gap:8px;display:flex}.dshqr-action{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 12px}.dshqr-action:hover{background:var(--dsw-alias-interactive-bg-hover)}'
+const QR_CSS = '.hHd-Xa_footerActions{flex-direction:column}.dshqr-layer{flex:none;align-items:center;width:100%;height:49px;margin:8px 0 0;display:flex;position:relative}.dshqr-buttons{align-items:center;width:100%;display:flex}.dshqr-badge{cursor:pointer;width:100%;height:49px;color:var(--dsw-alias-label-primary);background:0 0;border:none;border-radius:12px;align-items:center;gap:8px;padding:0 8px 0 6px;font-family:inherit;font-size:14px;display:inline-flex;overflow:hidden}.dshqr-badge:hover{background:var(--dsw-alias-interactive-bg-hover-solid)}.dshqr-label{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.dshqr-layer.dshqr-rail{width:36px;height:36px;margin:0}.dshqr-rail .dshqr-badge{border-radius:50%;justify-content:center;gap:0;width:36px;height:36px;padding:0}.dshqr-panel{z-index:30;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-base);width:320px;max-width:calc(100vw - 24px);box-shadow:var(--dsw-shadow-lv2);border-radius:12px;flex-direction:column;display:flex;position:fixed;bottom:128px;left:12px;overflow:hidden;animation:dshqrFadeIn 180ms ease}.dshqr-panel.dshqr-closing{animation:dshqrFadeOut 180ms ease forwards}.dshqr-header{box-sizing:border-box;border-bottom:1px solid var(--dsw-alias-border-l2);flex:none;justify-content:space-between;align-items:center;min-height:44px;padding:10px 12px;display:flex}.dshqr-title{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-close{width:24px;height:24px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:999px;font-size:18px;line-height:1;padding:0}.dshqr-close:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-body{flex:1;min-height:0;padding:14px;flex-direction:column;align-items:center;gap:14px;display:flex;max-height:calc(100vh - 180px);overflow-y:auto}.dshqr-block{flex-direction:column;align-items:center;gap:8px;display:flex;width:100%}.dshqr-qr{width:170px;height:170px;border-radius:8px;overflow:hidden;background:#fff;cursor:pointer}.dshqr-qr:hover{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:-2px}.dshqr-kind{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-url{color:var(--dsw-alias-label-secondary);font-size:11px;line-height:16px;word-break:break-all;text-align:center;margin:0}.dshqr-count{color:var(--dsw-alias-label-caption);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-config{border-top:1px solid var(--dsw-alias-border-l2);flex:none;width:100%;align-items:center;gap:8px;padding-top:12px;display:flex}.dshqr-configlabel{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;flex:1}.dshqr-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:64px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-apply{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 10px}.dshqr-apply:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-msg{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px;margin:0;text-align:center}.dshqr-note{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-error{color:var(--dsw-alias-state-error-primary);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-hint{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px;margin:0;text-align:center}.dshqr-kind-row{align-items:center;gap:6px;display:inline-flex}.dshqr-info{position:relative;cursor:help;color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:1}.dshqr-info-tip{display:none;position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:var(--dsw-alias-bg-layer-2);border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px;font-size:11px;line-height:16px;white-space:nowrap;z-index:40}.dshqr-info:hover .dshqr-info-tip{display:block}@keyframes dshqrFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes dshqrFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(6px)}}.dshqr-actions{flex:none;width:100%;justify-content:center;gap:8px;display:flex}.dshqr-action{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 12px}.dshqr-action:hover{background:var(--dsw-alias-interactive-bg-hover)}'
 const SETTINGS_CSS = '.dshqr-card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-3);border-radius:12px;list-style:none;transition:border-color .16s,background .16s}.dshqr-card:hover{border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-open{background:var(--dsw-alias-bg-layer-2);border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-header{appearance:none;width:100%;font:inherit;color:inherit;text-align:left;cursor:pointer;background:0 0;border:0;border-radius:12px;align-items:center;gap:12px;padding:14px 16px;display:flex}.dshqr-card-headtext{flex-direction:column;flex:1;gap:4px;min-width:0;display:flex}.dshqr-card-name{color:var(--dsw-alias-label-primary);font-size:15px;font-weight:600;line-height:1.4}.dshqr-card-desc{color:var(--dsw-alias-label-tertiary);font-size:13px;line-height:1.5}.dshqr-card-chevron{color:var(--dsw-alias-label-tertiary);flex:none;transition:transform .16s;font-size:12px}.dshqr-card-chevron-open{transform:rotate(180deg)}.dshqr-card-body{border-top:1px solid var(--dsw-alias-border-l2);margin:0 16px;padding:8px 0 12px}.dshqr-card-row{align-items:center;gap:10px;padding:8px 0;display:flex}.dshqr-card-label{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:1.5;flex:1}.dshqr-card-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:90px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-card-footer{border-top:1px solid var(--dsw-alias-border-l2);justify-content:flex-end;align-items:center;gap:8px;padding:12px 0 4px;display:flex}.dshqr-card-msg{min-width:0;color:var(--dsw-alias-state-error-primary);flex:1;margin:0;font-size:12px;line-height:1.5}.dshqr-card-discard,.dshqr-card-save{appearance:none;font:inherit;cursor:pointer;border:1px solid #0000;border-radius:8px;padding:5px 14px;font-size:13px;line-height:1.5}.dshqr-card-discard{border-color:var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);background:0 0}.dshqr-card-discard:hover{color:var(--dsw-alias-label-primary);border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-save{background:var(--dsw-alias-label-primary);color:var(--dsw-alias-bg-layer-3)}'
 function ConfigCard() {
   const [open, setOpen] = React.useState(false)
@@ -347,7 +348,7 @@ function ConfigCard() {
   React.useEffect(() => {
     host.call('get-config').then((c) => {
       setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays), refresh: String(c && c.refreshSeconds) })
-    }).catch(() => setState({ status: 'error', port: '', days: '' }))
+    }).catch(() => setState({ status: 'error', port: '', days: '', refresh: '' }))
   }, [])
   function reload() {
     host.call('get-config').then((c) => {
@@ -469,8 +470,7 @@ return {
           setMsg('Session length: ' + (r && r.sessionDays) + ' days')
         }).catch(() => { setMsg('Failed to apply') })
       }
-      function copyLink() {
-        const url = state.localUrl
+      function copyUrl(url) {
         if (!url) { setCopied('No link yet'); return }
         try {
           if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
@@ -482,18 +482,26 @@ return {
           setCopied('Copy failed')
         }
       }
-      function qrBlock(label, url) {
+      function qrBlock(label, url, isPublic) {
         if (!url) return null
         let svg = null
-        try { svg = matrixToSvg(buildQrMatrix(url, 1), 4, 4) } catch (e) { svg = null }
+        try { svg = matrixToSvg(buildQrMatrix(url, 1), 4, 4, isPublic ? '#2563eb' : '#000000') } catch (e) { svg = null }
         if (!svg) return null
         return React.createElement('div', { className: 'dshqr-block' },
-          React.createElement('div', { className: 'dshqr-qr', dangerouslySetInnerHTML: { __html: svg } }),
-          React.createElement('span', { className: 'dshqr-kind' }, label)
+          React.createElement('div', {
+            className: 'dshqr-qr',
+            title: 'Click to copy link',
+            onClick: () => copyUrl(url),
+            dangerouslySetInnerHTML: { __html: svg }
+          }),
+          React.createElement('div', { className: 'dshqr-kind-row' },
+            React.createElement('span', { className: 'dshqr-kind' }, label),
+            isPublic ? React.createElement('span', { className: 'dshqr-info' }, 'ⓘ', React.createElement('span', { className: 'dshqr-info-tip' }, 'Public internet sharing')) : null
+          )
         )
       }
-      const localBlock = state.status === 'ready' ? qrBlock('Local network', state.localUrl) : null
-      const publicBlock = state.status === 'ready' ? qrBlock('Public internet', state.publicUrl) : null
+      const localBlock = state.status === 'ready' ? qrBlock('Local network', state.localUrl, false) : null
+      const publicBlock = state.status === 'ready' ? qrBlock('Public internet', state.publicUrl, true) : null
       return React.createElement('div', { className: wide ? 'dshqr-layer' : 'dshqr-layer dshqr-rail' },
         React.createElement('div', { className: 'dshqr-buttons' },
           React.createElement('button', {
@@ -524,9 +532,9 @@ return {
             state.status === 'error' || !localBlock ? React.createElement('p', { className: 'dshqr-error' }, 'Reverse proxy is not ready. Try again in a moment.') :
             React.createElement(React.Fragment, null,
               React.createElement('p', { className: 'dshqr-count' }, refreshSecs > 0 ? ('New code in ' + left + 's') : 'Auto-refresh off'),
+              React.createElement('p', { className: 'dshqr-hint' }, 'Click on the QR codes to copy link'),
               React.createElement('div', { className: 'dshqr-actions' },
-                React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: refresh }, 'Refresh'),
-                React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: copyLink }, 'Copy link')
+                React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: refresh }, 'Refresh')
               ),
               copied ? React.createElement('p', { className: 'dshqr-msg' }, copied) : null,
               localBlock,
