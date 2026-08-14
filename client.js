@@ -338,12 +338,55 @@ function qrIcon() {
   return React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'currentColor', fillRule: 'evenodd', 'aria-hidden': 'true' }, React.createElement('path', { d: d }))
 }
 const QR_CSS = '.hHd-Xa_footerActions{flex-direction:column}.dshqr-layer{flex:none;align-items:center;width:100%;height:49px;margin:8px 0 0;display:flex;position:relative}.dshqr-buttons{align-items:center;width:100%;display:flex}.dshqr-badge{cursor:pointer;width:100%;height:49px;color:var(--dsw-alias-label-primary);background:0 0;border:none;border-radius:12px;align-items:center;gap:8px;padding:0 8px 0 6px;font-family:inherit;font-size:14px;display:inline-flex;overflow:hidden}.dshqr-badge:hover{background:var(--dsw-alias-interactive-bg-hover-solid)}.dshqr-label{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.dshqr-layer.dshqr-rail{width:36px;height:36px;margin:0}.dshqr-rail .dshqr-badge{border-radius:50%;justify-content:center;gap:0;width:36px;height:36px;padding:0}.dshqr-panel{z-index:30;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-base);width:320px;max-width:calc(100vw - 24px);box-shadow:var(--dsw-shadow-lv2);border-radius:12px;flex-direction:column;display:flex;position:fixed;bottom:128px;left:12px;overflow:hidden;animation:dshqrFadeIn 180ms ease}.dshqr-panel.dshqr-closing{animation:dshqrFadeOut 180ms ease forwards}.dshqr-header{box-sizing:border-box;border-bottom:1px solid var(--dsw-alias-border-l2);flex:none;justify-content:space-between;align-items:center;min-height:44px;padding:10px 12px;display:flex}.dshqr-title{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-close{width:24px;height:24px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:999px;font-size:18px;line-height:1;padding:0}.dshqr-close:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-body{flex:1;min-height:0;padding:14px;flex-direction:column;align-items:center;gap:14px;display:flex;max-height:calc(100vh - 180px);overflow-y:auto}.dshqr-block{flex-direction:column;align-items:center;gap:8px;display:flex;width:100%}.dshqr-qr{width:170px;height:170px;border-radius:8px;overflow:hidden;background:#fff}.dshqr-kind{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-url{color:var(--dsw-alias-label-secondary);font-size:11px;line-height:16px;word-break:break-all;text-align:center;margin:0}.dshqr-count{color:var(--dsw-alias-label-caption);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-config{border-top:1px solid var(--dsw-alias-border-l2);flex:none;width:100%;align-items:center;gap:8px;padding-top:12px;display:flex}.dshqr-configlabel{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;flex:1}.dshqr-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:64px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-apply{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 10px}.dshqr-apply:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-msg{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px;margin:0;text-align:center}.dshqr-note{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-error{color:var(--dsw-alias-state-error-primary);font-size:12px;line-height:18px;margin:0;text-align:center}@keyframes dshqrFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes dshqrFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(6px)}}'
+const SETTINGS_CSS = '.dshqr-settings-card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;padding:12px 14px;flex-direction:column;gap:10px;display:flex}.dshqr-settings-head{flex-direction:column;gap:2px;display:flex}.dshqr-settings-title{color:var(--dsw-alias-label-primary);font-size:14px;font-weight:500;line-height:20px}.dshqr-settings-sub{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.dshqr-settings-row{align-items:center;gap:10px;display:flex}.dshqr-settings-label{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;flex:1}.dshqr-settings-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:90px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-settings-actions{align-items:center;gap:10px;justify-content:flex-end;display:flex}.dshqr-settings-save{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 12px}.dshqr-settings-save:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-settings-msg{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px}'
+function ConfigCard() {
+  const [state, setState] = React.useState({ status: 'loading', port: '', days: '' })
+  const [msg, setMsg] = React.useState('')
+  React.useEffect(() => {
+    host.call('get-config').then((c) => {
+      setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays) })
+    }).catch(() => setState({ status: 'error', port: '', days: '' }))
+  }, [])
+  function save() {
+    const port = Number(state.port)
+    const days = Number(state.days)
+    if (!(port > 0 && port < 65536)) { setMsg('Port must be 1-65535'); return }
+    if (!(days > 0 && days <= 3650)) { setMsg('Days must be 1-3650'); return }
+    host.call('set-config', { port: port, sessionDays: days }).then((c) => {
+      setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays) })
+      setMsg('Saved')
+    }).catch(() => setMsg('Save failed'))
+  }
+  return React.createElement('li', { className: 'dshqr-settings-card' },
+    React.createElement('div', { className: 'dshqr-settings-head' },
+      React.createElement('span', { className: 'dshqr-settings-title' }, 'QR connect'),
+      React.createElement('span', { className: 'dshqr-settings-sub' }, 'LAN reverse proxy for mobile access')
+    ),
+    React.createElement('div', { className: 'dshqr-settings-row' },
+      React.createElement('label', { className: 'dshqr-settings-label' }, 'Proxy port'),
+      React.createElement('input', { className: 'dshqr-settings-input', type: 'number', min: 1, max: 65535, value: state.port, onChange: (e) => setState({ ...state, port: e.target.value }) })
+    ),
+    React.createElement('div', { className: 'dshqr-settings-row' },
+      React.createElement('label', { className: 'dshqr-settings-label' }, 'Session length (days)'),
+      React.createElement('input', { className: 'dshqr-settings-input', type: 'number', min: 1, max: 3650, value: state.days, onChange: (e) => setState({ ...state, days: e.target.value }) })
+    ),
+    React.createElement('div', { className: 'dshqr-settings-actions' },
+      React.createElement('button', { type: 'button', className: 'dshqr-settings-save', onClick: save }, 'Save'),
+      msg ? React.createElement('span', { className: 'dshqr-settings-msg' }, msg) : null
+    )
+  )
+}
 return {
   inject: ['timer'],
   apply(ctx) {
     const slots = ctx.get('slots')
     if (slots === undefined) return
     styles.insert(QR_CSS)
+    styles.insert(SETTINGS_CSS)
+    slots.inject('settings.plugin.item', () => slots.register(
+      { name: 'settings.plugin.item', id: 'qr-connect', order: 100 },
+      ConfigCard
+    ))
     function QrConnect(props) {
       const wide = props.wide
       const [open, setOpen] = React.useState(false)
@@ -393,8 +436,8 @@ return {
       function applyDays() {
         const n = Number(days)
         if (!(n > 0) || !(n <= 3650)) { setMsg('Enter 1-3650'); return }
-        host.call('set-session-days', { days: n }).then((r) => {
-          setMsg('Session length: ' + (r && r.days) + ' days')
+        host.call('set-config', { sessionDays: n }).then((r) => {
+          setMsg('Session length: ' + (r && r.sessionDays) + ' days')
         }).catch(() => { setMsg('Failed to apply') })
       }
       function qrBlock(label, url) {
