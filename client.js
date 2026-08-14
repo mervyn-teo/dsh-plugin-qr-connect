@@ -509,17 +509,23 @@ return {
           publicUrl: info.publicIp ? make(info.publicIp) : null,
         }
       }
+      function applyInfo(info) {
+        const urls = buildUrls(info)
+        if (urls.localUrl || urls.publicUrl) {
+          setState({ status: 'ready', localUrl: urls.localUrl, publicUrl: urls.publicUrl })
+        } else {
+          setState({ status: 'error', localUrl: null, publicUrl: null })
+        }
+        const rs = (info && typeof info.refreshSeconds === 'number') ? info.refreshSeconds : 30
+        setRefreshSecs(rs)
+      }
       function refresh() {
-        return host.call('proxy-info').then((info) => {
-          const urls = buildUrls(info)
-          if (urls.localUrl || urls.publicUrl) {
-            setState({ status: 'ready', localUrl: urls.localUrl, publicUrl: urls.publicUrl })
-          } else {
-            setState({ status: 'error', localUrl: null, publicUrl: null })
-          }
-          const rs = (info && typeof info.refreshSeconds === 'number') ? info.refreshSeconds : 30
-          setRefreshSecs(rs)
-        }).catch(() => {
+        return host.call('proxy-info').then(applyInfo).catch(() => {
+          setState({ status: 'error', localUrl: null, publicUrl: null })
+        })
+      }
+      function manualRefresh() {
+        return host.call('rotate-now').then(applyInfo).catch(() => {
           setState({ status: 'error', localUrl: null, publicUrl: null })
         })
       }
@@ -615,7 +621,7 @@ return {
               React.createElement('p', { className: 'dshqr-count' }, refreshSecs > 0 ? t('panel.newCode', { n: left }) : t('panel.autoOff')),
               React.createElement('p', { className: 'dshqr-hint' }, t('panel.copyHint')),
               React.createElement('div', { className: 'dshqr-actions' },
-                React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: refresh }, t('panel.refresh'))
+                React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: manualRefresh }, t('panel.refresh'))
               ),
               copied ? React.createElement('p', { className: 'dshqr-msg' }, copied) : null,
               localBlock,

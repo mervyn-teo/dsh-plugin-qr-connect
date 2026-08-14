@@ -89,6 +89,7 @@ const server = http.createServer(function (req, res) {
 })
 rotate()
 if (rotateMs > 0) setInterval(rotate, rotateMs)
+process.on('SIGUSR1', function () { rotate() })
 server.on('error', function (e) { console.error('dsh-lan-proxy error: ' + e.message) })
 server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listening on ' + port) })
 `
@@ -173,6 +174,21 @@ server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listen
     }
 
     harness.handle('proxy-info', async () => {
+      const shell = ctx.get('shell')
+      const results = await Promise.all([readSecret(), detectLocalIp(shell), detectPublicIp(shell)])
+      return { secret: results[0], ip: results[1], publicIp: results[2], port: configPort, refreshSeconds: configRefresh }
+    })
+
+    harness.handle('rotate-now', async () => {
+      if (proxyProc && proxyProc.pid > 0) {
+        const shell = ctx.get('shell')
+        if (shell !== undefined) {
+          try {
+            const spec = shell.resolve({ command: 'kill -USR1 ' + proxyProc.pid + '; sleep 0.2' })
+            await shell.run(spec)
+          } catch (e) {}
+        }
+      }
       const shell = ctx.get('shell')
       const results = await Promise.all([readSecret(), detectLocalIp(shell), detectPublicIp(shell)])
       return { secret: results[0], ip: results[1], publicIp: results[2], port: configPort, refreshSeconds: configRefresh }
