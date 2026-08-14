@@ -1,7 +1,7 @@
 {
   "name": "dsh-plugin-qr-connect",
   "version": "0.1.0",
-  "description": "DeepSeek Harness (DSH) dynamic Cordis plugin: a small sidebar button above Settings that shows a QR code of the web UI's LAN address so phones on the same network can connect.",
+  "description": "DeepSeek Harness (DSH) Web plugin: a QR-code button above Settings that lets phones connect to the web UI through an auth-gated reverse proxy.",
   "keywords": [
     "dsh-plugin",
     "deepseek-harness",
@@ -15,18 +15,57 @@
     "type": "git",
     "url": "git+https://github.com/mervyn-teo/dsh-plugin-qr-connect.git"
   },
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "default": "./lib/index.js"
+    },
+    "./client": {
+      "default": "./lib/client.js"
+    },
+    "./invariant": {
+      "default": "./lib/invariant.js"
+    },
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
   "files": [
-    "host.js",
-    "client.js",
+    "lib",
+    "cordis.patch.yml",
     "README.md",
     "README.zh.md",
     "LICENSE"
   ],
   "dsh": {
-    "type": "dynamic-plugin",
-    "idPrefix": "qrconn",
-    "name": "QR connect",
-    "host": "./host.js",
-    "client": "./client.js"
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-runtime",
+        "@deepseek-ai/dsh-client-locale",
+        "@deepseek-ai/dsh-client-ui-slots"
+      ]
+    }
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-api-remotes": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-connection": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-locale": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-runtime": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-primitives": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-client-ui-slots": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-host-webserver": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-invariants": "^0.1.0-rc.6",
+    "@deepseek-ai/dsh-settings": "^0.1.0-rc.6",
+    "@deepseek-ai/schemastery": "^3.18.1"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-settings": "^0.1.0-rc.6",
+    "@deepseek-ai/schemastery": "^3.18.1"
   }
 }

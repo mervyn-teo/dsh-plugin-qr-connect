@@ -1,0 +1,19 @@
+# Patch for dsh-plugin-qr-connect: one host row.
+#
+# Runs an auth-gated reverse proxy on 0.0.0.0:<port> that exposes the loopback
+# web UI to phones on the LAN / internet, plus a browser half that adds a QR
+# button above the sidebar Settings button and a "QR connect" settings card.
+#
+# The browser half reads proxy state through three same-origin routes on the
+# web server: GET /__qr/info, POST /__qr/rotate, and GET|POST /__qr/config.
+
+- insert:
+    - id: qr-connect
+      name: dsh-plugin-qr-connect
+      config:
+        # Reverse-proxy listen port (the QR URLs point at this port).
+        port: 8088
+        # Session cookie length in days.
+        sessionDays: 30
+        # Seconds between secret rotations (0 disables auto-refresh).
+        refreshSeconds: 30
