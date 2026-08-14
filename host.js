@@ -10,6 +10,7 @@ return {
     const SESSION_TTL_DAYS = 30
     const SCRIPT_PATH = '/tmp/dsh-lan-proxy.js'
     const STATE_PATH = '/tmp/dsh-lan-proxy-state.json'
+    const POLYFILL_SCRIPT = `<script>/*dsh-rnd-uuid-polyfill*/if(window.crypto&&typeof window.crypto.randomUUID!=='function'){window.crypto.randomUUID=function(){var b=new Uint8Array(16);window.crypto.getRandomValues(b);b[6]=(b[6]&15)|64;b[8]=(b[8]&63)|128;var s='';for(var i=0;i<16;i++)s+=('00'+b[i].toString(16)).slice(-2);return s.slice(0,8)+'-'+s.slice(8,12)+'-'+s.slice(12,16)+'-'+s.slice(16,20)+'-'+s.slice(20)}};</script>`
 
     const PROXY_SCRIPT = `const http = require('http')
 const crypto = require('crypto')
@@ -150,6 +151,14 @@ server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listen
         if (proxyProc) { try { proxyProc.terminate() } catch (e) {} proxyProc = null }
       }
     })
+
+    const webServer = ctx.get('webServer')
+    if (webServer !== undefined) {
+      ctx.effect(() => webServer.tapIndex((html) => {
+        if (html.indexOf('dsh-rnd-uuid-polyfill') !== -1) return html
+        return html.replace('<head>', '<head>' + POLYFILL_SCRIPT)
+      }))
+    }
 
     function readSecret() {
       const fs = ctx.get('fs')
