@@ -50,11 +50,31 @@ boot.
 
 ## Install
 
-Mount it as a bundle in a DSH profile:
+Install it into a DSH profile with the built-in `dsh plugin` command — it adds
+the dependency and registers the bundle automatically:
 
-1. In the profile's `package.json`, add `"dsh-plugin-qr-connect": "file:/path/to/dsh-plugin-qr-connect"` to `dependencies`, and add `"dsh-plugin-qr-connect"` to `dsh.profile.bundles`.
-2. Run `pnpm install` in the profile directory.
-3. Restart `dsh web`.
+```bash
+# Local path
+dsh plugin --profile web add file:/path/to/dsh-plugin-qr-connect
+
+# From inside the plugin checkout
+cd dsh-plugin-qr-connect && dsh plugin --profile web add file:.
+
+# From GitHub
+dsh plugin --profile web add github:mervyn-teo/dsh-plugin-qr-connect
+
+# From npm (once published)
+dsh plugin --profile web add dsh-plugin-qr-connect
+```
+
+Then restart `dsh web` — host bundles load at boot.
+
+Remove or update with:
+
+```bash
+dsh plugin --profile web remove dsh-plugin-qr-connect
+dsh plugin --profile web update dsh-plugin-qr-connect
+```
 
 Defaults live in `cordis.patch.yml` (`port`, `sessionDays`, `refreshSeconds`).
 Change them there (or in the profile's own `cordis.patch.yml`) and restart, or
