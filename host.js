@@ -128,21 +128,26 @@ server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listen
     }
 
     function startProxy() {
-      const shell = ctx.get('shell')
-      if (shell === undefined) return
-      if (proxyProc) { try { proxyProc.kill() } catch (e) {} proxyProc = null }
+      const subprocess = ctx.get('subprocess')
+      if (subprocess === undefined) return
+      if (proxyProc) { try { proxyProc.terminate() } catch (e) {} proxyProc = null }
       const webServer = ctx.get('webServer')
       const upstreamPort = (webServer && typeof webServer.port === 'number') ? webServer.port : 3080
       const ttlSeconds = Math.round(sessionDays * 86400)
-      const command = 'node ' + SCRIPT_PATH + ' --port ' + PROXY_PORT + ' --upstream http://127.0.0.1:' + upstreamPort + ' --ttl-seconds ' + ttlSeconds + ' --rotate-ms 30000 --state-file ' + STATE_PATH
-      const spec = shell.resolve({ command: command })
-      proxyProc = shell.start(spec)
+      proxyProc = subprocess.spawn({
+        argv: ['node', SCRIPT_PATH, '--port', String(PROXY_PORT), '--upstream', 'http://127.0.0.1:' + upstreamPort, '--ttl-seconds', String(ttlSeconds), '--rotate-ms', '30000', '--state-file', STATE_PATH],
+        cwd: '/tmp',
+        stdio: { stdin: 'ignore', stdout: 'pipe', stderr: 'pipe' },
+        graceMs: 1000,
+      })
+      if (proxyProc && proxyProc.stdout) proxyProc.stdout.resume()
+      if (proxyProc && proxyProc.stderr) proxyProc.stderr.resume()
     }
 
     ctx.effect(() => {
       writeScript().then((ok) => { if (ok) startProxy() })
       return () => {
-        if (proxyProc) { try { proxyProc.kill() } catch (e) {} proxyProc = null }
+        if (proxyProc) { try { proxyProc.terminate() } catch (e) {} proxyProc = null }
       }
     })
 
