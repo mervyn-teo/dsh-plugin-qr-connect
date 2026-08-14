@@ -1,5 +1,11 @@
 # dsh-plugin-qr-connect
 
+<p align="center">
+  <a href="https://github.com/mervyn-teo/dsh-plugin-qr-connect">
+    <img src="assets/banner.png" alt="dsh-plugin-qr-connect 横幅 — 扫码即可让任意设备连接到你的 DeepSeek Harness Web UI" width="100%">
+  </a>
+</p>
+
 [English](README.md) | 中文
 
 一个 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）动态

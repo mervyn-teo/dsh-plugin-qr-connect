@@ -1,5 +1,11 @@
 # dsh-plugin-qr-connect
 
+<p align="center">
+  <a href="https://github.com/mervyn-teo/dsh-plugin-qr-connect">
+    <img src="assets/banner.png" alt="dsh-plugin-qr-connect banner — scan to connect any device to your DeepSeek Harness web UI" width="100%">
+  </a>
+</p>
+
 English | [中文](README.zh.md)
 
 A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (DSH) dynamic
