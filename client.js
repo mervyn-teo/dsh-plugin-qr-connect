@@ -341,17 +341,17 @@ const QR_CSS = '.hHd-Xa_footerActions{flex-direction:column}.dshqr-layer{flex:no
 const SETTINGS_CSS = '.dshqr-card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-3);border-radius:12px;list-style:none;transition:border-color .16s,background .16s}.dshqr-card:hover{border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-open{background:var(--dsw-alias-bg-layer-2);border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-header{appearance:none;width:100%;font:inherit;color:inherit;text-align:left;cursor:pointer;background:0 0;border:0;border-radius:12px;align-items:center;gap:12px;padding:14px 16px;display:flex}.dshqr-card-headtext{flex-direction:column;flex:1;gap:4px;min-width:0;display:flex}.dshqr-card-name{color:var(--dsw-alias-label-primary);font-size:15px;font-weight:600;line-height:1.4}.dshqr-card-desc{color:var(--dsw-alias-label-tertiary);font-size:13px;line-height:1.5}.dshqr-card-chevron{color:var(--dsw-alias-label-tertiary);flex:none;transition:transform .16s;font-size:12px}.dshqr-card-chevron-open{transform:rotate(180deg)}.dshqr-card-body{border-top:1px solid var(--dsw-alias-border-l2);margin:0 16px;padding:8px 0 12px}.dshqr-card-row{align-items:center;gap:10px;padding:8px 0;display:flex}.dshqr-card-label{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:1.5;flex:1}.dshqr-card-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:90px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-card-footer{border-top:1px solid var(--dsw-alias-border-l2);justify-content:flex-end;align-items:center;gap:8px;padding:12px 0 4px;display:flex}.dshqr-card-msg{min-width:0;color:var(--dsw-alias-state-error-primary);flex:1;margin:0;font-size:12px;line-height:1.5}.dshqr-card-discard,.dshqr-card-save{appearance:none;font:inherit;cursor:pointer;border:1px solid #0000;border-radius:8px;padding:5px 14px;font-size:13px;line-height:1.5}.dshqr-card-discard{border-color:var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);background:0 0}.dshqr-card-discard:hover{color:var(--dsw-alias-label-primary);border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-save{background:var(--dsw-alias-label-primary);color:var(--dsw-alias-bg-layer-3)}'
 function ConfigCard() {
   const [open, setOpen] = React.useState(false)
-  const [state, setState] = React.useState({ status: 'loading', port: '', days: '' })
+  const [state, setState] = React.useState({ status: 'loading', port: '', days: '', refresh: '' })
   const [msg, setMsg] = React.useState('')
   const [dirty, setDirty] = React.useState(false)
   React.useEffect(() => {
     host.call('get-config').then((c) => {
-      setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays) })
+      setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays), refresh: String(c && c.refreshSeconds) })
     }).catch(() => setState({ status: 'error', port: '', days: '' }))
   }, [])
   function reload() {
     host.call('get-config').then((c) => {
-      setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays) })
+      setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays), refresh: String(c && c.refreshSeconds) })
       setDirty(false)
       setMsg('')
     }).catch(() => {})
@@ -359,10 +359,12 @@ function ConfigCard() {
   function save() {
     const port = Number(state.port)
     const days = Number(state.days)
+    const refresh = Number(state.refresh)
     if (!(port > 0 && port < 65536)) { setMsg('Port must be 1-65535'); return }
     if (!(days > 0 && days <= 3650)) { setMsg('Days must be 1-3650'); return }
-    host.call('set-config', { port: port, sessionDays: days }).then((c) => {
-      setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays) })
+    if (!(refresh >= 0 && refresh <= 86400)) { setMsg('Refresh must be 0-86400'); return }
+    host.call('set-config', { port: port, sessionDays: days, refreshSeconds: refresh }).then((c) => {
+      setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays), refresh: String(c && c.refreshSeconds) })
       setDirty(false)
       setMsg('')
     }).catch(() => setMsg('Save failed'))
@@ -383,6 +385,10 @@ function ConfigCard() {
       React.createElement('div', { className: 'dshqr-card-row' },
         React.createElement('label', { className: 'dshqr-card-label' }, 'Session length (days)'),
         React.createElement('input', { className: 'dshqr-card-input', type: 'number', min: 1, max: 3650, value: state.days, onChange: (e) => { setState({ ...state, days: e.target.value }); setDirty(true) } })
+      ),
+      React.createElement('div', { className: 'dshqr-card-row' },
+        React.createElement('label', { className: 'dshqr-card-label' }, 'Refresh interval (seconds, 0 = off)'),
+        React.createElement('input', { className: 'dshqr-card-input', type: 'number', min: 0, max: 86400, value: state.refresh, onChange: (e) => { setState({ ...state, refresh: e.target.value }); setDirty(true) } })
       ),
       React.createElement('div', { className: 'dshqr-card-footer' },
         msg ? React.createElement('span', { className: 'dshqr-card-msg' }, msg) : null,
@@ -412,6 +418,7 @@ return {
       const [days, setDays] = React.useState('30')
       const [msg, setMsg] = React.useState('')
       const [copied, setCopied] = React.useState('')
+      const [refreshSecs, setRefreshSecs] = React.useState(30)
       function buildUrls(info) {
         if (!info || !info.secret || !info.port) return { localUrl: null, publicUrl: null }
         const make = (host) => 'http://' + host + ':' + info.port + '/?auth=' + info.secret
@@ -428,6 +435,8 @@ return {
           } else {
             setState({ status: 'error', localUrl: null, publicUrl: null })
           }
+          const rs = (info && typeof info.refreshSeconds === 'number') ? info.refreshSeconds : 30
+          setRefreshSecs(rs)
         }).catch(() => {
           setState({ status: 'error', localUrl: null, publicUrl: null })
         })
@@ -437,14 +446,17 @@ return {
         setState({ status: 'loading', localUrl: null, publicUrl: null })
         setMsg('')
         refresh()
-        let n = 30
-        setLeft(30)
+      }, [open])
+      React.useEffect(() => {
+        if (!open || !(refreshSecs > 0)) return
+        setLeft(refreshSecs)
+        let n = refreshSecs
         return ctx.interval(() => {
           n -= 1
-          if (n <= 0) { n = 30; refresh() }
+          if (n <= 0) { n = refreshSecs; refresh() }
           setLeft(n)
         }, 1000)
-      }, [open])
+      }, [open, refreshSecs])
       function toggle() {
         if (open) { setClosing(true); return }
         setClosing(false)
@@ -511,7 +523,7 @@ return {
             state.status === 'loading' ? React.createElement('p', { className: 'dshqr-note' }, 'Starting reverse proxy…') :
             state.status === 'error' || !localBlock ? React.createElement('p', { className: 'dshqr-error' }, 'Reverse proxy is not ready. Try again in a moment.') :
             React.createElement(React.Fragment, null,
-              React.createElement('p', { className: 'dshqr-count' }, 'New code in ' + left + 's'),
+              React.createElement('p', { className: 'dshqr-count' }, refreshSecs > 0 ? ('New code in ' + left + 's') : 'Auto-refresh off'),
               React.createElement('div', { className: 'dshqr-actions' },
                 React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: refresh }, 'Refresh'),
                 React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: copyLink }, 'Copy link')

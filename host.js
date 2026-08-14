@@ -8,6 +8,7 @@ return {
   apply(ctx) {
     const DEFAULT_PORT = 8088
     const DEFAULT_SESSION_DAYS = 30
+    const DEFAULT_REFRESH_SECONDS = 30
     const SCRIPT_PATH = '/tmp/dsh-lan-proxy.js'
     const STATE_PATH = '/tmp/dsh-lan-proxy-state.json'
     const POLYFILL_SCRIPT = `<script>/*dsh-rnd-uuid-polyfill*/if(window.crypto&&typeof window.crypto.randomUUID!=='function'){window.crypto.randomUUID=function(){var b=new Uint8Array(16);window.crypto.getRandomValues(b);b[6]=(b[6]&15)|64;b[8]=(b[8]&63)|128;var s='';for(var i=0;i<16;i++)s+=('00'+b[i].toString(16)).slice(-2);return s.slice(0,8)+'-'+s.slice(8,12)+'-'+s.slice(12,16)+'-'+s.slice(16,20)+'-'+s.slice(20)}};</script>`
@@ -87,7 +88,7 @@ const server = http.createServer(function (req, res) {
   res.end('Unauthorized')
 })
 rotate()
-setInterval(rotate, rotateMs)
+if (rotateMs > 0) setInterval(rotate, rotateMs)
 server.on('error', function (e) { console.error('dsh-lan-proxy error: ' + e.message) })
 server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listening on ' + port) })
 `
@@ -95,6 +96,7 @@ server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listen
     let proxyProc = null
     let configPort = DEFAULT_PORT
     let configDays = DEFAULT_SESSION_DAYS
+    let configRefresh = DEFAULT_REFRESH_SECONDS
 
     async function detectLocalIp(shell) {
       if (shell === undefined) return null
@@ -138,7 +140,7 @@ server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listen
       const upstreamPort = (webServer && typeof webServer.port === 'number') ? webServer.port : 3080
       const ttlSeconds = Math.round(configDays * 86400)
       proxyProc = subprocess.spawn({
-        argv: ['node', SCRIPT_PATH, '--port', String(configPort), '--upstream', 'http://127.0.0.1:' + upstreamPort, '--ttl-seconds', String(ttlSeconds), '--rotate-ms', '30000', '--state-file', STATE_PATH],
+        argv: ['node', SCRIPT_PATH, '--port', String(configPort), '--upstream', 'http://127.0.0.1:' + upstreamPort, '--ttl-seconds', String(ttlSeconds), '--rotate-ms', String(configRefresh * 1000), '--state-file', STATE_PATH],
         cwd: '/tmp',
         stdio: { stdin: 'ignore', stdout: 'pipe', stderr: 'pipe' },
         graceMs: 1000,
@@ -173,22 +175,24 @@ server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listen
     harness.handle('proxy-info', async () => {
       const shell = ctx.get('shell')
       const results = await Promise.all([readSecret(), detectLocalIp(shell), detectPublicIp(shell)])
-      return { secret: results[0], ip: results[1], publicIp: results[2], port: configPort }
+      return { secret: results[0], ip: results[1], publicIp: results[2], port: configPort, refreshSeconds: configRefresh }
     })
 
     harness.handle('get-config', async () => {
-      return { port: configPort, sessionDays: configDays }
+      return { port: configPort, sessionDays: configDays, refreshSeconds: configRefresh }
     })
 
     harness.handle('set-config', async (args) => {
       const nextPort = (args && typeof args.port === 'number' && args.port > 0 && args.port < 65536) ? args.port : configPort
       const nextDays = (args && typeof args.sessionDays === 'number' && args.sessionDays > 0 && args.sessionDays <= 3650) ? args.sessionDays : configDays
-      if (nextPort !== configPort || nextDays !== configDays) {
+      const nextRefresh = (args && typeof args.refreshSeconds === 'number' && args.refreshSeconds >= 0 && args.refreshSeconds <= 86400) ? args.refreshSeconds : configRefresh
+      if (nextPort !== configPort || nextDays !== configDays || nextRefresh !== configRefresh) {
         configPort = nextPort
         configDays = nextDays
+        configRefresh = nextRefresh
         startProxy()
       }
-      return { port: configPort, sessionDays: configDays }
+      return { port: configPort, sessionDays: configDays, refreshSeconds: configRefresh }
     })
   },
 }
