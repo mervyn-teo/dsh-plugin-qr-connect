@@ -340,7 +340,83 @@ function qrIcon() {
 }
 const QR_CSS = '.hHd-Xa_footerActions{flex-direction:column}.dshqr-layer{flex:none;align-items:center;width:100%;height:49px;margin:8px 0 0;display:flex;position:relative}.dshqr-buttons{align-items:center;width:100%;display:flex}.dshqr-badge{cursor:pointer;width:100%;height:49px;color:var(--dsw-alias-label-primary);background:0 0;border:none;border-radius:12px;align-items:center;gap:8px;padding:0 8px 0 6px;font-family:inherit;font-size:14px;display:inline-flex;overflow:hidden}.dshqr-badge:hover{background:var(--dsw-alias-interactive-bg-hover-solid)}.dshqr-label{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.dshqr-layer.dshqr-rail{width:36px;height:36px;margin:0}.dshqr-rail .dshqr-badge{border-radius:50%;justify-content:center;gap:0;width:36px;height:36px;padding:0}.dshqr-panel{z-index:30;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-base);width:320px;max-width:calc(100vw - 24px);box-shadow:var(--dsw-shadow-lv2);border-radius:12px;flex-direction:column;display:flex;position:fixed;bottom:128px;left:12px;overflow:hidden;animation:dshqrFadeIn 180ms ease}.dshqr-panel.dshqr-closing{animation:dshqrFadeOut 180ms ease forwards}.dshqr-header{box-sizing:border-box;border-bottom:1px solid var(--dsw-alias-border-l2);flex:none;justify-content:space-between;align-items:center;min-height:44px;padding:10px 12px;display:flex}.dshqr-title{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-close{width:24px;height:24px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:999px;font-size:18px;line-height:1;padding:0}.dshqr-close:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-body{flex:1;min-height:0;padding:14px;flex-direction:column;align-items:center;gap:14px;display:flex;max-height:calc(100vh - 180px);overflow-y:auto}.dshqr-block{flex-direction:column;align-items:center;gap:8px;display:flex;width:100%}.dshqr-qr{width:170px;height:170px;border-radius:8px;overflow:hidden;background:#fff;cursor:pointer}.dshqr-qr:hover{outline:2px solid var(--dsw-alias-brand-primary);outline-offset:-2px}.dshqr-kind{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-url{color:var(--dsw-alias-label-secondary);font-size:11px;line-height:16px;word-break:break-all;text-align:center;margin:0}.dshqr-count{color:var(--dsw-alias-label-caption);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-config{border-top:1px solid var(--dsw-alias-border-l2);flex:none;width:100%;align-items:center;gap:8px;padding-top:12px;display:flex}.dshqr-configlabel{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;flex:1}.dshqr-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:64px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-apply{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 10px}.dshqr-apply:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-msg{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px;margin:0;text-align:center}.dshqr-note{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-error{color:var(--dsw-alias-state-error-primary);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-hint{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px;margin:0;text-align:center}.dshqr-kind-row{align-items:center;gap:6px;display:inline-flex}.dshqr-info{position:relative;cursor:help;color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:1}.dshqr-info-tip{display:none;position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:var(--dsw-alias-bg-layer-2);border:1px solid var(--dsw-alias-border-l2);color:var(--dsw-alias-label-primary);border-radius:6px;padding:4px 8px;font-size:11px;line-height:16px;white-space:nowrap;z-index:40}.dshqr-info:hover .dshqr-info-tip{display:block}@keyframes dshqrFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes dshqrFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(6px)}}.dshqr-actions{flex:none;width:100%;justify-content:center;gap:8px;display:flex}.dshqr-action{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 12px}.dshqr-action:hover{background:var(--dsw-alias-interactive-bg-hover)}'
 const SETTINGS_CSS = '.dshqr-card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-3);border-radius:12px;list-style:none;transition:border-color .16s,background .16s}.dshqr-card:hover{border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-open{background:var(--dsw-alias-bg-layer-2);border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-header{appearance:none;width:100%;font:inherit;color:inherit;text-align:left;cursor:pointer;background:0 0;border:0;border-radius:12px;align-items:center;gap:12px;padding:14px 16px;display:flex}.dshqr-card-headtext{flex-direction:column;flex:1;gap:4px;min-width:0;display:flex}.dshqr-card-name{color:var(--dsw-alias-label-primary);font-size:15px;font-weight:600;line-height:1.4}.dshqr-card-desc{color:var(--dsw-alias-label-tertiary);font-size:13px;line-height:1.5}.dshqr-card-chevron{color:var(--dsw-alias-label-tertiary);flex:none;transition:transform .16s;font-size:12px}.dshqr-card-chevron-open{transform:rotate(180deg)}.dshqr-card-body{border-top:1px solid var(--dsw-alias-border-l2);margin:0 16px;padding:8px 0 12px}.dshqr-card-row{align-items:center;gap:10px;padding:8px 0;display:flex}.dshqr-card-label{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:1.5;flex:1}.dshqr-card-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:90px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-card-footer{border-top:1px solid var(--dsw-alias-border-l2);justify-content:flex-end;align-items:center;gap:8px;padding:12px 0 4px;display:flex}.dshqr-card-msg{min-width:0;color:var(--dsw-alias-state-error-primary);flex:1;margin:0;font-size:12px;line-height:1.5}.dshqr-card-discard,.dshqr-card-save{appearance:none;font:inherit;cursor:pointer;border:1px solid #0000;border-radius:8px;padding:5px 14px;font-size:13px;line-height:1.5}.dshqr-card-discard{border-color:var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);background:0 0}.dshqr-card-discard:hover{color:var(--dsw-alias-label-primary);border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-save{background:var(--dsw-alias-label-primary);color:var(--dsw-alias-bg-layer-3)}'
-function ConfigCard() {
+const NS = 'qr-connect'
+const ZH = {
+  'button.title': '二维码：连接设备',
+  'button.label': '二维码',
+  'button.aria': '显示二维码以从其他设备连接',
+  'panel.title': '扫码连接',
+  'panel.newCode': '{n} 秒后更新',
+  'panel.autoOff': '自动刷新已关闭',
+  'panel.copyHint': '点击二维码复制链接',
+  'panel.refresh': '刷新',
+  'panel.local': '本地网络',
+  'panel.public': '公网',
+  'panel.publicUnavailable': '公网 IP 不可用',
+  'panel.starting': '正在启动反向代理…',
+  'panel.notReady': '反向代理尚未就绪，请稍后再试。',
+  'panel.sessionDays': '会话时长（天）',
+  'panel.apply': '应用',
+  'panel.publicInfo': '公网分享',
+  'panel.clickCopy': '点击复制链接',
+  'panel.copied': '已复制到剪贴板',
+  'panel.copyFailed': '复制失败',
+  'panel.noLink': '暂无链接',
+  'panel.daysApplied': '会话时长：{n} 天',
+  'panel.failedApply': '应用失败',
+  'panel.enterDays': '请输入 1-3650',
+  'card.name': '二维码连接',
+  'card.desc': '用于移动设备访问的局域网反向代理',
+  'card.unsaved': '用于移动设备访问的局域网反向代理 · 有未保存的更改',
+  'card.port': '代理端口',
+  'card.sessionDays': '会话时长（天）',
+  'card.refresh': '刷新间隔（秒，0 为关闭）',
+  'card.reset': '重置',
+  'card.save': '保存',
+  'card.portInvalid': '端口必须在 1-65535 之间',
+  'card.daysInvalid': '天数必须在 1-3650 之间',
+  'card.refreshInvalid': '刷新间隔必须在 0-86400 之间',
+  'card.saveFailed': '保存失败',
+}
+const EN = {
+  'button.title': 'QR codes for connecting devices',
+  'button.label': 'QR codes',
+  'button.aria': 'Show QR codes to connect from another device',
+  'panel.title': 'Scan to connect',
+  'panel.newCode': 'New code in {n}s',
+  'panel.autoOff': 'Auto-refresh off',
+  'panel.copyHint': 'Click on the QR codes to copy link',
+  'panel.refresh': 'Refresh',
+  'panel.local': 'Local network',
+  'panel.public': 'Public internet',
+  'panel.publicUnavailable': 'Public IP unavailable',
+  'panel.starting': 'Starting reverse proxy…',
+  'panel.notReady': 'Reverse proxy is not ready. Try again in a moment.',
+  'panel.sessionDays': 'Session length (days)',
+  'panel.apply': 'Apply',
+  'panel.publicInfo': 'Public internet sharing',
+  'panel.clickCopy': 'Click to copy link',
+  'panel.copied': 'Copied to clipboard',
+  'panel.copyFailed': 'Copy failed',
+  'panel.noLink': 'No link yet',
+  'panel.daysApplied': 'Session length: {n} days',
+  'panel.failedApply': 'Failed to apply',
+  'panel.enterDays': 'Enter 1-3650',
+  'card.name': 'QR connect',
+  'card.desc': 'LAN reverse proxy for mobile access',
+  'card.unsaved': 'LAN reverse proxy for mobile access · unsaved changes',
+  'card.port': 'Proxy port',
+  'card.sessionDays': 'Session length (days)',
+  'card.refresh': 'Refresh interval (seconds, 0 = off)',
+  'card.reset': 'Reset',
+  'card.save': 'Save',
+  'card.portInvalid': 'Port must be 1-65535',
+  'card.daysInvalid': 'Days must be 1-3650',
+  'card.refreshInvalid': 'Refresh must be 0-86400',
+  'card.saveFailed': 'Save failed',
+}
+function ConfigCard(props) {
+  const t = props.t || ((k) => k)
   const [open, setOpen] = React.useState(false)
   const [state, setState] = React.useState({ status: 'loading', port: '', days: '', refresh: '' })
   const [msg, setMsg] = React.useState('')
@@ -361,40 +437,40 @@ function ConfigCard() {
     const port = Number(state.port)
     const days = Number(state.days)
     const refresh = Number(state.refresh)
-    if (!(port > 0 && port < 65536)) { setMsg('Port must be 1-65535'); return }
-    if (!(days > 0 && days <= 3650)) { setMsg('Days must be 1-3650'); return }
-    if (!(refresh >= 0 && refresh <= 86400)) { setMsg('Refresh must be 0-86400'); return }
+    if (!(port > 0 && port < 65536)) { setMsg(t('card.portInvalid')); return }
+    if (!(days > 0 && days <= 3650)) { setMsg(t('card.daysInvalid')); return }
+    if (!(refresh >= 0 && refresh <= 86400)) { setMsg(t('card.refreshInvalid')); return }
     host.call('set-config', { port: port, sessionDays: days, refreshSeconds: refresh }).then((c) => {
       setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays), refresh: String(c && c.refreshSeconds) })
       setDirty(false)
       setMsg('')
-    }).catch(() => setMsg('Save failed'))
+    }).catch(() => setMsg(t('card.saveFailed')))
   }
   return React.createElement('li', { className: 'dshqr-card' + (open ? ' dshqr-card-open' : '') },
     React.createElement('button', { type: 'button', className: 'dshqr-card-header', 'aria-expanded': open, onClick: () => setOpen(!open) },
       React.createElement('span', { className: 'dshqr-card-headtext' },
-        React.createElement('span', { className: 'dshqr-card-name' }, 'QR connect'),
-        React.createElement('span', { className: 'dshqr-card-desc' }, dirty ? 'LAN reverse proxy for mobile access · unsaved changes' : 'LAN reverse proxy for mobile access')
+        React.createElement('span', { className: 'dshqr-card-name' }, t('card.name')),
+        React.createElement('span', { className: 'dshqr-card-desc' }, dirty ? t('card.unsaved') : t('card.desc'))
       ),
       React.createElement('span', { className: 'dshqr-card-chevron' + (open ? ' dshqr-card-chevron-open' : '') }, '▾')
     ),
     open ? React.createElement('div', { className: 'dshqr-card-body' },
       React.createElement('div', { className: 'dshqr-card-row' },
-        React.createElement('label', { className: 'dshqr-card-label' }, 'Proxy port'),
+        React.createElement('label', { className: 'dshqr-card-label' }, t('card.port')),
         React.createElement('input', { className: 'dshqr-card-input', type: 'number', min: 1, max: 65535, value: state.port, onChange: (e) => { setState({ ...state, port: e.target.value }); setDirty(true) } })
       ),
       React.createElement('div', { className: 'dshqr-card-row' },
-        React.createElement('label', { className: 'dshqr-card-label' }, 'Session length (days)'),
+        React.createElement('label', { className: 'dshqr-card-label' }, t('card.sessionDays')),
         React.createElement('input', { className: 'dshqr-card-input', type: 'number', min: 1, max: 3650, value: state.days, onChange: (e) => { setState({ ...state, days: e.target.value }); setDirty(true) } })
       ),
       React.createElement('div', { className: 'dshqr-card-row' },
-        React.createElement('label', { className: 'dshqr-card-label' }, 'Refresh interval (seconds, 0 = off)'),
+        React.createElement('label', { className: 'dshqr-card-label' }, t('card.refresh')),
         React.createElement('input', { className: 'dshqr-card-input', type: 'number', min: 0, max: 86400, value: state.refresh, onChange: (e) => { setState({ ...state, refresh: e.target.value }); setDirty(true) } })
       ),
       React.createElement('div', { className: 'dshqr-card-footer' },
         msg ? React.createElement('span', { className: 'dshqr-card-msg' }, msg) : null,
-        React.createElement('button', { type: 'button', className: 'dshqr-card-discard', onClick: reload }, 'Reset'),
-        React.createElement('button', { type: 'button', className: 'dshqr-card-save', onClick: save }, 'Save')
+        React.createElement('button', { type: 'button', className: 'dshqr-card-discard', onClick: reload }, t('card.reset')),
+        React.createElement('button', { type: 'button', className: 'dshqr-card-save', onClick: save }, t('card.save'))
       )
     ) : null
   )
@@ -406,11 +482,16 @@ return {
     if (slots === undefined) return
     styles.insert(QR_CSS)
     styles.insert(SETTINGS_CSS)
+    const locale = ctx.get('locale')
+    if (locale !== undefined) {
+      ctx.effect(() => locale.register(NS, { zh: ZH, en: EN }))
+    }
     slots.inject('settings.plugin.item', () => slots.register(
-      { name: 'settings.plugin.item', id: 'qr-connect', order: 100 },
+      { name: 'settings.plugin.item', id: 'qr-connect', order: 100, locale: NS },
       ConfigCard
     ))
     function QrConnect(props) {
+      const t = props.t || ((k) => k)
       const wide = props.wide
       const [open, setOpen] = React.useState(false)
       const [closing, setClosing] = React.useState(false)
@@ -465,21 +546,21 @@ return {
       }
       function applyDays() {
         const n = Number(days)
-        if (!(n > 0) || !(n <= 3650)) { setMsg('Enter 1-3650'); return }
+        if (!(n > 0) || !(n <= 3650)) { setMsg(t('panel.enterDays')); return }
         host.call('set-config', { sessionDays: n }).then((r) => {
-          setMsg('Session length: ' + (r && r.sessionDays) + ' days')
-        }).catch(() => { setMsg('Failed to apply') })
+          setMsg(t('panel.daysApplied', { n: (r && r.sessionDays) }))
+        }).catch(() => { setMsg(t('panel.failedApply')) })
       }
       function copyUrl(url) {
-        if (!url) { setCopied('No link yet'); return }
+        if (!url) { setCopied(t('panel.noLink')); return }
         try {
           if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(() => setCopied('Copied to clipboard'), () => setCopied('Copy failed'))
+            navigator.clipboard.writeText(url).then(() => setCopied(t('panel.copied')), () => setCopied(t('panel.copyFailed')))
           } else {
-            setCopied('Copy failed')
+            setCopied(t('panel.copyFailed'))
           }
         } catch (e) {
-          setCopied('Copy failed')
+          setCopied(t('panel.copyFailed'))
         }
       }
       function qrBlock(label, url, isPublic) {
@@ -490,30 +571,30 @@ return {
         return React.createElement('div', { className: 'dshqr-block' },
           React.createElement('div', {
             className: 'dshqr-qr',
-            title: 'Click to copy link',
+            title: t('panel.clickCopy'),
             onClick: () => copyUrl(url),
             dangerouslySetInnerHTML: { __html: svg }
           }),
           React.createElement('div', { className: 'dshqr-kind-row' },
             React.createElement('span', { className: 'dshqr-kind' }, label),
-            isPublic ? React.createElement('span', { className: 'dshqr-info' }, 'ⓘ', React.createElement('span', { className: 'dshqr-info-tip' }, 'Public internet sharing')) : null
+            isPublic ? React.createElement('span', { className: 'dshqr-info' }, 'ⓘ', React.createElement('span', { className: 'dshqr-info-tip' }, t('panel.publicInfo'))) : null
           )
         )
       }
-      const localBlock = state.status === 'ready' ? qrBlock('Local network', state.localUrl, false) : null
-      const publicBlock = state.status === 'ready' ? qrBlock('Public internet', state.publicUrl, true) : null
+      const localBlock = state.status === 'ready' ? qrBlock(t('panel.local'), state.localUrl, false) : null
+      const publicBlock = state.status === 'ready' ? qrBlock(t('panel.public'), state.publicUrl, true) : null
       return React.createElement('div', { className: wide ? 'dshqr-layer' : 'dshqr-layer dshqr-rail' },
         React.createElement('div', { className: 'dshqr-buttons' },
           React.createElement('button', {
             type: 'button',
             className: 'dshqr-badge',
-            title: 'QR codes for connecting devices',
-            'aria-label': 'Show QR codes to connect from another device',
+            title: t('button.title'),
+            'aria-label': t('button.aria'),
             'aria-expanded': open,
             onClick: toggle
           },
             qrIcon(),
-            wide ? React.createElement('span', { className: 'dshqr-label' }, 'QR codes') : null
+            wide ? React.createElement('span', { className: 'dshqr-label' }, t('button.label')) : null
           )
         ),
         open ? React.createElement('section', {
@@ -524,25 +605,25 @@ return {
           }
         },
           React.createElement('header', { className: 'dshqr-header' },
-            React.createElement('span', { className: 'dshqr-title' }, 'Scan to connect'),
+            React.createElement('span', { className: 'dshqr-title' }, t('panel.title')),
             React.createElement('button', { type: 'button', className: 'dshqr-close', 'aria-label': 'Close', onClick: toggle }, '×')
           ),
           React.createElement('div', { className: 'dshqr-body' },
-            state.status === 'loading' ? React.createElement('p', { className: 'dshqr-note' }, 'Starting reverse proxy…') :
-            state.status === 'error' || !localBlock ? React.createElement('p', { className: 'dshqr-error' }, 'Reverse proxy is not ready. Try again in a moment.') :
+            state.status === 'loading' ? React.createElement('p', { className: 'dshqr-note' }, t('panel.starting')) :
+            state.status === 'error' || !localBlock ? React.createElement('p', { className: 'dshqr-error' }, t('panel.notReady')) :
             React.createElement(React.Fragment, null,
-              React.createElement('p', { className: 'dshqr-count' }, refreshSecs > 0 ? ('New code in ' + left + 's') : 'Auto-refresh off'),
-              React.createElement('p', { className: 'dshqr-hint' }, 'Click on the QR codes to copy link'),
+              React.createElement('p', { className: 'dshqr-count' }, refreshSecs > 0 ? t('panel.newCode', { n: left }) : t('panel.autoOff')),
+              React.createElement('p', { className: 'dshqr-hint' }, t('panel.copyHint')),
               React.createElement('div', { className: 'dshqr-actions' },
-                React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: refresh }, 'Refresh')
+                React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: refresh }, t('panel.refresh'))
               ),
               copied ? React.createElement('p', { className: 'dshqr-msg' }, copied) : null,
               localBlock,
-              publicBlock || React.createElement('p', { className: 'dshqr-note' }, 'Public IP unavailable'),
+              publicBlock || React.createElement('p', { className: 'dshqr-note' }, t('panel.publicUnavailable')),
               React.createElement('div', { className: 'dshqr-config' },
-                React.createElement('span', { className: 'dshqr-configlabel' }, 'Session length (days)'),
+                React.createElement('span', { className: 'dshqr-configlabel' }, t('panel.sessionDays')),
                 React.createElement('input', { className: 'dshqr-input', type: 'number', min: 1, max: 3650, value: days, onChange: (e) => setDays(e.target.value) }),
-                React.createElement('button', { type: 'button', className: 'dshqr-apply', onClick: applyDays }, 'Apply')
+                React.createElement('button', { type: 'button', className: 'dshqr-apply', onClick: applyDays }, t('panel.apply'))
               ),
               msg ? React.createElement('p', { className: 'dshqr-msg' }, msg) : null
             )
@@ -551,7 +632,7 @@ return {
       )
     }
     slots.inject('sidebar.footer.action', () => slots.register(
-      { name: 'sidebar.footer.action', id: 'qr-connect', order: -10 },
+      { name: 'sidebar.footer.action', id: 'qr-connect', order: -10, locale: NS },
       QrConnect
     ))
   },
