@@ -1,11 +1,98 @@
 // DSH dynamic Cordis plugin — Host half (value of `code.host` in cordis_define).
-// Exposes a package-private RPC handler `lan-ip` returning:
-//   - `ip`:       the machine's primary non-loopback IPv4 (LAN) address.
-//   - `publicIp`: the WAN/public IP reported by an echo service (may be null).
-// The client half combines each with the browser's own origin (protocol + port)
-// to build the URLs a phone should open.
+// Runs a small auth-gated reverse proxy (a child `node` process) that listens on
+// 0.0.0.0:<PROXY_PORT> and forwards to the loopback web server. A request
+// carrying a valid `?auth=<secret>` is issued a session cookie; a request
+// carrying a valid session cookie is proxied. The secret rotates every 30s and
+// is published to a state file the client reads to build the QR URLs.
 return {
   apply(ctx) {
+    const PROXY_PORT = 8088
+    const SESSION_TTL_DAYS = 30
+    const SCRIPT_PATH = '/tmp/dsh-lan-proxy.js'
+    const STATE_PATH = '/tmp/dsh-lan-proxy-state.json'
+
+    const PROXY_SCRIPT = `const http = require('http')
+const crypto = require('crypto')
+const fs = require('fs')
+function arg(name, dflt) {
+  const i = process.argv.indexOf(name)
+  return i >= 0 && i + 1 < process.argv.length ? process.argv[i + 1] : dflt
+}
+const port = parseInt(arg('--port', '8088'), 10)
+const upstream = arg('--upstream', 'http://127.0.0.1:3080')
+const ttlSeconds = parseInt(arg('--ttl-seconds', '2592000'), 10)
+const rotateMs = parseInt(arg('--rotate-ms', '30000'), 10)
+const stateFile = arg('--state-file', '/tmp/dsh-lan-proxy-state.json')
+const up = new URL(upstream)
+let currentSecret = ''
+let previousSecret = ''
+function rotate() {
+  previousSecret = currentSecret
+  currentSecret = crypto.randomBytes(16).toString('hex')
+  try { fs.writeFileSync(stateFile, JSON.stringify({ secret: currentSecret, updatedAt: Date.now() })) } catch (e) {}
+}
+const sessions = new Map()
+function prune() {
+  const now = Date.now()
+  for (const k of sessions.keys()) { if (sessions.get(k) < now) sessions.delete(k) }
+}
+function issue() {
+  prune()
+  const t = crypto.randomBytes(32).toString('hex')
+  sessions.set(t, Date.now() + ttlSeconds * 1000)
+  return t
+}
+function valid(t) {
+  prune()
+  return !!t && sessions.has(t) && sessions.get(t) > Date.now()
+}
+function sessionCookie(req) {
+  const h = req.headers.cookie || ''
+  for (const part of h.split(';')) {
+    const eq = part.indexOf('=')
+    if (eq < 0) continue
+    if (part.slice(0, eq).trim() === 'dsh_proxy_session') return part.slice(eq + 1).trim()
+  }
+  return null
+}
+function proxy(req, res) {
+  const headers = {}
+  for (const k of Object.keys(req.headers)) headers[k] = req.headers[k]
+  headers.host = up.host
+  const preq = http.request({ hostname: up.hostname, port: up.port || 80, path: req.url, method: req.method, headers: headers }, function (pres) {
+    res.writeHead(pres.statusCode, pres.headers)
+    pres.pipe(res)
+  })
+  preq.on('error', function () { if (!res.headersSent) res.writeHead(502, { 'Content-Type': 'text/plain' }); res.end('Bad gateway') })
+  req.pipe(preq)
+}
+const server = http.createServer(function (req, res) {
+  const u = new URL(req.url, 'http://localhost')
+  const auth = u.searchParams.get('auth')
+  if (auth) {
+    if (auth === currentSecret || auth === previousSecret) {
+      const token = issue()
+      res.writeHead(302, { 'Set-Cookie': 'dsh_proxy_session=' + token + '; HttpOnly; SameSite=Lax; Path=/; Max-Age=' + ttlSeconds, 'Location': '/' })
+      res.end()
+      return
+    }
+    res.writeHead(401, { 'Content-Type': 'text/plain' })
+    res.end('Unauthorized')
+    return
+  }
+  if (valid(sessionCookie(req))) { proxy(req, res); return }
+  res.writeHead(401, { 'Content-Type': 'text/plain' })
+  res.end('Unauthorized')
+})
+rotate()
+setInterval(rotate, rotateMs)
+server.on('error', function (e) { console.error('dsh-lan-proxy error: ' + e.message) })
+server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listening on ' + port) })
+`
+
+    let proxyProc = null
+    let sessionDays = SESSION_TTL_DAYS
+
     async function detectLocalIp(shell) {
       if (shell === undefined) return null
       try {
@@ -19,6 +106,7 @@ return {
         return null
       }
     }
+
     async function detectPublicIp(web) {
       if (web === undefined) return null
       try {
@@ -32,11 +120,54 @@ return {
         return null
       }
     }
-    harness.handle('lan-ip', async () => {
+
+    function writeScript() {
+      const fs = ctx.get('fs')
+      if (fs === undefined) return Promise.resolve(false)
+      return fs.resolve(SCRIPT_PATH).then((target) => fs.writeText(target, PROXY_SCRIPT)).then(() => true).catch(() => false)
+    }
+
+    function startProxy() {
+      const shell = ctx.get('shell')
+      if (shell === undefined) return
+      if (proxyProc) { try { proxyProc.kill() } catch (e) {} proxyProc = null }
+      const webServer = ctx.get('webServer')
+      const upstreamPort = (webServer && typeof webServer.port === 'number') ? webServer.port : 3080
+      const ttlSeconds = Math.round(sessionDays * 86400)
+      const command = 'node ' + SCRIPT_PATH + ' --port ' + PROXY_PORT + ' --upstream http://127.0.0.1:' + upstreamPort + ' --ttl-seconds ' + ttlSeconds + ' --rotate-ms 30000 --state-file ' + STATE_PATH
+      const spec = shell.resolve({ command: command })
+      proxyProc = shell.start(spec)
+    }
+
+    ctx.effect(() => {
+      writeScript().then((ok) => { if (ok) startProxy() })
+      return () => {
+        if (proxyProc) { try { proxyProc.kill() } catch (e) {} proxyProc = null }
+      }
+    })
+
+    function readSecret() {
+      const fs = ctx.get('fs')
+      if (fs === undefined) return Promise.resolve(null)
+      return fs.resolve(STATE_PATH).then((target) => fs.readText(target)).then((txt) => {
+        try { return (JSON.parse(txt) || {}).secret || null } catch (e) { return null }
+      }).catch(() => null)
+    }
+
+    harness.handle('proxy-info', async () => {
       const shell = ctx.get('shell')
       const web = ctx.get('web')
-      const [ip, publicIp] = await Promise.all([detectLocalIp(shell), detectPublicIp(web)])
-      return { ip: ip, publicIp: publicIp }
+      const results = await Promise.all([readSecret(), detectLocalIp(shell), detectPublicIp(web)])
+      return { secret: results[0], ip: results[1], publicIp: results[2], port: PROXY_PORT }
+    })
+
+    harness.handle('set-session-days', async (args) => {
+      const days = args && typeof args.days === 'number' ? args.days : null
+      if (days && days > 0 && days <= 3650) {
+        sessionDays = days
+        startProxy()
+      }
+      return { days: sessionDays }
     })
   },
 }
