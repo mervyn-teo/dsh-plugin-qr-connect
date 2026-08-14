@@ -60,6 +60,7 @@ function proxy(req, res) {
   const headers = {}
   for (const k of Object.keys(req.headers)) headers[k] = req.headers[k]
   headers.host = up.host
+  if (headers.origin) headers.origin = up.origin
   const preq = http.request({ hostname: up.hostname, port: up.port || 80, path: req.url, method: req.method, headers: headers }, function (pres) {
     res.writeHead(pres.statusCode, pres.headers)
     pres.pipe(res)
