@@ -1,0 +1,31 @@
+{
+  "name": "dsh-plugin-qr-connect",
+  "version": "0.1.0",
+  "description": "DeepSeek Harness (DSH) dynamic Cordis plugin: a small sidebar button above Settings that shows a QR code of the web UI's LAN address so phones on the same network can connect.",
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "dsh",
+    "cordis",
+    "qr-code"
+  ],
+  "license": "MIT",
+  "author": "mervyn-teo",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mervyn-teo/dsh-plugin-qr-connect.git"
+  },
+  "files": [
+    "host.js",
+    "client.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "type": "dynamic-plugin",
+    "idPrefix": "qrconn",
+    "name": "QR connect",
+    "host": "./host.js",
+    "client": "./client.js"
+  }
+}
