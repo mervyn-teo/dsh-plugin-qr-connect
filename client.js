@@ -1,8 +1,8 @@
 // DSH dynamic Cordis plugin — Client half (value of `code.client` in cordis_define).
 // Registers a `sidebar.footer.action` button (rendered above the Settings row)
-// that opens a small panel with a QR code of the web UI's LAN address.
-// The QR encoder below is fully self-contained (byte mode, EC level M,
-// auto-version, no external library or network access).
+// that opens a small panel with two QR codes — one for the LAN address and one
+// for the public IP. The QR encoder below is fully self-contained (byte mode,
+// EC level M, auto-version, no external library or network access).
 //
 // ---- QR code encoder (byte mode, Nayuki-style) ----
 function rsMultiply(x, y) {
@@ -337,66 +337,91 @@ function qrIcon() {
   d += 'M10 10h2v2h-2zM13 10h2v2h-2zM10 13h2v2h-2zM13 13h2v2h-2z'
   return React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'currentColor', fillRule: 'evenodd', 'aria-hidden': 'true' }, React.createElement('path', { d: d }))
 }
-const QR_CSS = '.dshqr-layer{flex:none;align-items:center;height:49px;margin:8px 0 0;display:flex;position:relative}.dshqr-buttons{align-items:center;width:100%;display:flex}.dshqr-badge{cursor:pointer;height:36px;color:var(--dsw-alias-label-primary);background:0 0;border:none;border-radius:12px;align-items:center;gap:8px;padding:0 10px;font-family:inherit;font-size:14px;display:inline-flex;overflow:hidden}.dshqr-badge:hover{background:var(--dsw-alias-interactive-bg-hover-solid)}.dshqr-label{white-space:nowrap;min-width:0;overflow:hidden}.dshqr-layer.dshqr-rail{width:36px;height:36px;margin:0}.dshqr-rail .dshqr-badge{border-radius:50%;justify-content:center;gap:0;width:36px;height:36px;padding:0}.dshqr-panel{z-index:30;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-base);width:280px;max-width:calc(100vw - 24px);box-shadow:var(--dsw-shadow-lv2);border-radius:12px;flex-direction:column;display:flex;position:fixed;bottom:128px;left:12px;overflow:hidden}.dshqr-header{box-sizing:border-box;border-bottom:1px solid var(--dsw-alias-border-l2);flex:none;justify-content:space-between;align-items:center;min-height:44px;padding:10px 12px;display:flex}.dshqr-title{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-close{width:24px;height:24px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:999px;font-size:18px;line-height:1;padding:0}.dshqr-close:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-body{flex:1;min-height:0;padding:14px;flex-direction:column;align-items:center;gap:12px;display:flex}.dshqr-qr{width:200px;height:200px;border-radius:8px;overflow:hidden;background:#fff}.dshqr-url{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;word-break:break-all;text-align:center;margin:0}.dshqr-note{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px;margin:0}.dshqr-error{color:var(--dsw-alias-state-error-primary);font-size:12px;line-height:18px;margin:0}'
+const QR_CSS = ':has(> .dshqr-layer){flex-direction:column}.dshqr-layer{flex:none;align-items:center;width:100%;height:49px;margin:8px 0 0;display:flex;position:relative}.dshqr-buttons{align-items:center;width:100%;display:flex}.dshqr-badge{cursor:pointer;width:100%;height:49px;color:var(--dsw-alias-label-primary);background:0 0;border:none;border-radius:12px;align-items:center;gap:8px;padding:0 8px 0 6px;font-family:inherit;font-size:14px;display:inline-flex;overflow:hidden}.dshqr-badge:hover{background:var(--dsw-alias-interactive-bg-hover-solid)}.dshqr-label{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.dshqr-layer.dshqr-rail{width:36px;height:36px;margin:0}.dshqr-rail .dshqr-badge{border-radius:50%;justify-content:center;gap:0;width:36px;height:36px;padding:0}.dshqr-panel{z-index:30;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-base);width:300px;max-width:calc(100vw - 24px);box-shadow:var(--dsw-shadow-lv2);border-radius:12px;flex-direction:column;display:flex;position:fixed;bottom:128px;left:12px;overflow:hidden;animation:dshqrFadeIn 180ms ease}.dshqr-panel.dshqr-closing{animation:dshqrFadeOut 180ms ease forwards}.dshqr-header{box-sizing:border-box;border-bottom:1px solid var(--dsw-alias-border-l2);flex:none;justify-content:space-between;align-items:center;min-height:44px;padding:10px 12px;display:flex}.dshqr-title{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-close{width:24px;height:24px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:999px;font-size:18px;line-height:1;padding:0}.dshqr-close:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-body{flex:1;min-height:0;padding:14px;flex-direction:column;align-items:center;gap:16px;display:flex;max-height:calc(100vh - 200px);overflow-y:auto}.dshqr-block{flex-direction:column;align-items:center;gap:8px;display:flex;width:100%}.dshqr-qr{width:170px;height:170px;border-radius:8px;overflow:hidden;background:#fff}.dshqr-kind{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-url{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;word-break:break-all;text-align:center;margin:0}.dshqr-note{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px;margin:0}.dshqr-error{color:var(--dsw-alias-state-error-primary);font-size:12px;line-height:18px;margin:0}@keyframes dshqrFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes dshqrFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(6px)}}'
 function QrConnect(props) {
   const wide = props.wide
   const [open, setOpen] = React.useState(false)
-  const [state, setState] = React.useState({ status: 'idle', url: null })
-  function resolveUrl() {
+  const [closing, setClosing] = React.useState(false)
+  const [state, setState] = React.useState({ status: 'idle', localUrl: null, publicUrl: null })
+  function resolve() {
     return host.call('lan-ip').then((res) => {
       const ip = res && res.ip
+      const publicIp = res && res.publicIp
       try {
         const loc = window.location
         const port = loc.port ? ':' + loc.port : ''
-        if (ip) return loc.protocol + '//' + ip + port + loc.pathname
-        return loc.protocol + '//' + loc.host + loc.pathname
+        const path = loc.pathname
+        const localUrl = ip ? (loc.protocol + '//' + ip + port + path) : (loc.protocol + '//' + loc.host + path)
+        const publicUrl = publicIp ? (loc.protocol + '//' + publicIp + port + path) : null
+        return { localUrl: localUrl, publicUrl: publicUrl }
       } catch (e) {
-        return ip ? 'http://' + ip + ':3080' : null
+        const localUrl = ip ? 'http://' + ip + ':3080' : null
+        const publicUrl = publicIp ? 'http://' + publicIp + ':3080' : null
+        return { localUrl: localUrl, publicUrl: publicUrl }
       }
     })
   }
   function toggle() {
-    const next = !open
-    setOpen(next)
-    if (next && state.status === 'idle') {
-      setState({ status: 'loading', url: null })
-      resolveUrl().then((url) => {
-        setState({ status: url ? 'ready' : 'error', url: url })
+    if (open) {
+      setClosing(true)
+      return
+    }
+    setClosing(false)
+    setOpen(true)
+    if (state.status === 'idle') {
+      setState({ status: 'loading', localUrl: null, publicUrl: null })
+      resolve().then((r) => {
+        setState({ status: 'ready', localUrl: r.localUrl, publicUrl: r.publicUrl })
       }).catch(() => {
-        setState({ status: 'error', url: null })
+        setState({ status: 'error', localUrl: null, publicUrl: null })
       })
     }
   }
-  let qrSvg = null
-  if (state.status === 'ready' && state.url) {
-    try { qrSvg = matrixToSvg(buildQrMatrix(state.url, 1), 4, 4) } catch (e) { qrSvg = null }
+  function qrBlock(label, url) {
+    if (!url) return null
+    let svg = null
+    try { svg = matrixToSvg(buildQrMatrix(url, 1), 4, 4) } catch (e) { svg = null }
+    if (!svg) return null
+    return React.createElement('div', { className: 'dshqr-block' },
+      React.createElement('div', { className: 'dshqr-qr', dangerouslySetInnerHTML: { __html: svg } }),
+      React.createElement('span', { className: 'dshqr-kind' }, label),
+      React.createElement('span', { className: 'dshqr-url' }, url)
+    )
   }
+  const localBlock = state.status === 'ready' ? qrBlock('Local network', state.localUrl) : null
+  const publicBlock = state.status === 'ready' ? qrBlock('Public internet', state.publicUrl) : null
   return React.createElement('div', { className: wide ? 'dshqr-layer' : 'dshqr-layer dshqr-rail' },
     React.createElement('div', { className: 'dshqr-buttons' },
       React.createElement('button', {
         type: 'button',
         className: 'dshqr-badge',
-        title: 'QR code for mobile devices',
-        'aria-label': 'Show QR code to connect from a mobile device',
+        title: 'QR codes for connecting devices',
+        'aria-label': 'Show QR codes to connect from another device',
         'aria-expanded': open,
         onClick: toggle
       },
         qrIcon(),
-        wide ? React.createElement('span', { className: 'dshqr-label' }, 'QR code') : null
+        wide ? React.createElement('span', { className: 'dshqr-label' }, 'QR codes') : null
       )
     ),
-    open ? React.createElement('section', { className: 'dshqr-panel', 'aria-label': 'Connect from mobile' },
+    open ? React.createElement('section', {
+      className: 'dshqr-panel' + (closing ? ' dshqr-closing' : ''),
+      'aria-label': 'Connect from another device',
+      onAnimationEnd: (e) => {
+        if (closing && e.animationName === 'dshqrFadeOut') { setOpen(false); setClosing(false) }
+      }
+    },
       React.createElement('header', { className: 'dshqr-header' },
         React.createElement('span', { className: 'dshqr-title' }, 'Scan to connect'),
         React.createElement('button', { type: 'button', className: 'dshqr-close', 'aria-label': 'Close', onClick: toggle }, '×')
       ),
       React.createElement('div', { className: 'dshqr-body' },
-        state.status === 'loading' ? React.createElement('p', { className: 'dshqr-note' }, 'Detecting network address…') :
-        state.status === 'error' || !qrSvg ? React.createElement('p', { className: 'dshqr-error' }, 'Could not determine a local address.') :
-        [
-          React.createElement('div', { key: 'qr', className: 'dshqr-qr', dangerouslySetInnerHTML: { __html: qrSvg } }),
-          React.createElement('p', { key: 'url', className: 'dshqr-url' }, state.url)
-        ]
+        state.status === 'loading' ? React.createElement('p', { className: 'dshqr-note' }, 'Detecting addresses…') :
+        state.status === 'error' || !localBlock ? React.createElement('p', { className: 'dshqr-error' }, 'Could not determine addresses.') :
+        React.createElement(React.Fragment, null,
+          localBlock,
+          publicBlock || React.createElement('p', { className: 'dshqr-note' }, 'Public IP unavailable')
+        )
       )
     ) : null
   )

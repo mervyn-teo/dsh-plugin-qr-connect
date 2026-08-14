@@ -7,14 +7,15 @@ a phone on the same network can scan it and open the web UI without typing the U
 
 ## What it does
 
-- Adds a compact button (`sidebar.footer.action`, `id: qr-connect`) above the
-  Settings row in the sidebar foot.
-- On click, opens a small panel with a scannable QR code plus the URL as text.
-- The Host half detects the machine's primary non-loopback IPv4 address; the
-  Client half combines it with the browser's own origin (protocol + port), so the
-  QR encodes the address a phone on the same LAN actually needs
-  (`http://<lan-ip>:<port>/`).
-- The QR code is generated entirely client-side with a self-contained encoder
+- Adds a full-width button (`sidebar.footer.action`, `id: qr-connect`) that is
+  stacked **above** the shipped Plugins button, both above the Settings row.
+- On click, opens a panel that fades in/out with **two** QR codes plus their
+  URLs:
+  - **Local network** — the machine's primary non-loopback IPv4 address, so a
+    phone on the same LAN can reach the web UI (`http://<lan-ip>:<port>/`).
+  - **Public internet** — the WAN/public IP (via `api.ipify.org`), so a device
+    outside the LAN can reach the host when port-forwarded.
+- Each QR is generated entirely client-side with a self-contained encoder
   (byte mode, error-correction level M, auto version, standard masking) — no
   external library and no network call to a QR service.
 
