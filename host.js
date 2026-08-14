@@ -28,6 +28,7 @@ const stateFile = arg('--state-file', '/tmp/dsh-lan-proxy-state.json')
 const up = new URL(upstream)
 let currentSecret = ''
 let previousSecret = ''
+const CRLF = String.fromCharCode(13, 10)
 function rotate() {
   previousSecret = currentSecret
   currentSecret = crypto.randomBytes(16).toString('hex')
@@ -90,6 +91,34 @@ const server = http.createServer(function (req, res) {
 rotate()
 if (rotateMs > 0) setInterval(rotate, rotateMs)
 process.on('SIGUSR1', function () { rotate() })
+server.on('upgrade', function (req, socket, head) {
+  if (!valid(sessionCookie(req))) {
+    socket.write('HTTP/1.1 401 Unauthorized' + CRLF + CRLF)
+    socket.destroy()
+    return
+  }
+  const headers = {}
+  for (const k of Object.keys(req.headers)) headers[k] = req.headers[k]
+  headers.host = up.host
+  if (headers.origin) headers.origin = up.origin
+  const proxyReq = http.request({ hostname: up.hostname, port: up.port || 80, path: req.url, method: req.method, headers: headers })
+  proxyReq.on('upgrade', function (proxyRes, proxySocket, proxyHead) {
+    let resHead = 'HTTP/1.1 101 Switching Protocols' + CRLF
+    for (const k of Object.keys(proxyRes.headers)) resHead += k + ': ' + proxyRes.headers[k] + CRLF
+    resHead += CRLF
+    socket.write(resHead)
+    socket.pipe(proxySocket)
+    proxySocket.pipe(socket)
+    if (proxyHead && proxyHead.length) proxySocket.unshift(proxyHead)
+    if (head && head.length) proxySocket.write(head)
+    proxySocket.on('error', function () { socket.destroy() })
+    socket.on('error', function () { proxySocket.destroy() })
+    proxySocket.on('close', function () { socket.destroy() })
+    socket.on('close', function () { proxySocket.destroy() })
+  })
+  proxyReq.on('error', function () { socket.destroy() })
+  proxyReq.end()
+})
 server.on('error', function (e) { console.error('dsh-lan-proxy error: ' + e.message) })
 server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listening on ' + port) })
 `
