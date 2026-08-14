@@ -337,16 +337,25 @@ function qrIcon() {
   d += 'M10 10h2v2h-2zM13 10h2v2h-2zM10 13h2v2h-2zM13 13h2v2h-2z'
   return React.createElement('svg', { width: 16, height: 16, viewBox: '0 0 16 16', fill: 'currentColor', fillRule: 'evenodd', 'aria-hidden': 'true' }, React.createElement('path', { d: d }))
 }
-const QR_CSS = '.hHd-Xa_footerActions{flex-direction:column}.dshqr-layer{flex:none;align-items:center;width:100%;height:49px;margin:8px 0 0;display:flex;position:relative}.dshqr-buttons{align-items:center;width:100%;display:flex}.dshqr-badge{cursor:pointer;width:100%;height:49px;color:var(--dsw-alias-label-primary);background:0 0;border:none;border-radius:12px;align-items:center;gap:8px;padding:0 8px 0 6px;font-family:inherit;font-size:14px;display:inline-flex;overflow:hidden}.dshqr-badge:hover{background:var(--dsw-alias-interactive-bg-hover-solid)}.dshqr-label{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.dshqr-layer.dshqr-rail{width:36px;height:36px;margin:0}.dshqr-rail .dshqr-badge{border-radius:50%;justify-content:center;gap:0;width:36px;height:36px;padding:0}.dshqr-panel{z-index:30;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-base);width:320px;max-width:calc(100vw - 24px);box-shadow:var(--dsw-shadow-lv2);border-radius:12px;flex-direction:column;display:flex;position:fixed;bottom:128px;left:12px;overflow:hidden;animation:dshqrFadeIn 180ms ease}.dshqr-panel.dshqr-closing{animation:dshqrFadeOut 180ms ease forwards}.dshqr-header{box-sizing:border-box;border-bottom:1px solid var(--dsw-alias-border-l2);flex:none;justify-content:space-between;align-items:center;min-height:44px;padding:10px 12px;display:flex}.dshqr-title{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-close{width:24px;height:24px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:999px;font-size:18px;line-height:1;padding:0}.dshqr-close:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-body{flex:1;min-height:0;padding:14px;flex-direction:column;align-items:center;gap:14px;display:flex;max-height:calc(100vh - 180px);overflow-y:auto}.dshqr-block{flex-direction:column;align-items:center;gap:8px;display:flex;width:100%}.dshqr-qr{width:170px;height:170px;border-radius:8px;overflow:hidden;background:#fff}.dshqr-kind{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-url{color:var(--dsw-alias-label-secondary);font-size:11px;line-height:16px;word-break:break-all;text-align:center;margin:0}.dshqr-count{color:var(--dsw-alias-label-caption);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-config{border-top:1px solid var(--dsw-alias-border-l2);flex:none;width:100%;align-items:center;gap:8px;padding-top:12px;display:flex}.dshqr-configlabel{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;flex:1}.dshqr-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:64px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-apply{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 10px}.dshqr-apply:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-msg{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px;margin:0;text-align:center}.dshqr-note{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-error{color:var(--dsw-alias-state-error-primary);font-size:12px;line-height:18px;margin:0;text-align:center}@keyframes dshqrFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes dshqrFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(6px)}}'
-const SETTINGS_CSS = '.dshqr-settings-card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);border-radius:12px;padding:12px 14px;flex-direction:column;gap:10px;display:flex}.dshqr-settings-head{flex-direction:column;gap:2px;display:flex}.dshqr-settings-title{color:var(--dsw-alias-label-primary);font-size:14px;font-weight:500;line-height:20px}.dshqr-settings-sub{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px}.dshqr-settings-row{align-items:center;gap:10px;display:flex}.dshqr-settings-label{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;flex:1}.dshqr-settings-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:90px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-settings-actions{align-items:center;gap:10px;justify-content:flex-end;display:flex}.dshqr-settings-save{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 12px}.dshqr-settings-save:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-settings-msg{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px}'
+const QR_CSS = '.hHd-Xa_footerActions{flex-direction:column}.dshqr-layer{flex:none;align-items:center;width:100%;height:49px;margin:8px 0 0;display:flex;position:relative}.dshqr-buttons{align-items:center;width:100%;display:flex}.dshqr-badge{cursor:pointer;width:100%;height:49px;color:var(--dsw-alias-label-primary);background:0 0;border:none;border-radius:12px;align-items:center;gap:8px;padding:0 8px 0 6px;font-family:inherit;font-size:14px;display:inline-flex;overflow:hidden}.dshqr-badge:hover{background:var(--dsw-alias-interactive-bg-hover-solid)}.dshqr-label{text-overflow:ellipsis;white-space:nowrap;min-width:0;overflow:hidden}.dshqr-layer.dshqr-rail{width:36px;height:36px;margin:0}.dshqr-rail .dshqr-badge{border-radius:50%;justify-content:center;gap:0;width:36px;height:36px;padding:0}.dshqr-panel{z-index:30;border:1px solid var(--dsw-alias-border-l1);background:var(--dsw-alias-bg-base);width:320px;max-width:calc(100vw - 24px);box-shadow:var(--dsw-shadow-lv2);border-radius:12px;flex-direction:column;display:flex;position:fixed;bottom:128px;left:12px;overflow:hidden;animation:dshqrFadeIn 180ms ease}.dshqr-panel.dshqr-closing{animation:dshqrFadeOut 180ms ease forwards}.dshqr-header{box-sizing:border-box;border-bottom:1px solid var(--dsw-alias-border-l2);flex:none;justify-content:space-between;align-items:center;min-height:44px;padding:10px 12px;display:flex}.dshqr-title{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-close{width:24px;height:24px;color:var(--dsw-alias-label-tertiary);cursor:pointer;background:0 0;border:none;border-radius:999px;font-size:18px;line-height:1;padding:0}.dshqr-close:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-body{flex:1;min-height:0;padding:14px;flex-direction:column;align-items:center;gap:14px;display:flex;max-height:calc(100vh - 180px);overflow-y:auto}.dshqr-block{flex-direction:column;align-items:center;gap:8px;display:flex;width:100%}.dshqr-qr{width:170px;height:170px;border-radius:8px;overflow:hidden;background:#fff}.dshqr-kind{color:var(--dsw-alias-label-primary);font-size:13px;font-weight:500;line-height:20px}.dshqr-url{color:var(--dsw-alias-label-secondary);font-size:11px;line-height:16px;word-break:break-all;text-align:center;margin:0}.dshqr-count{color:var(--dsw-alias-label-caption);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-config{border-top:1px solid var(--dsw-alias-border-l2);flex:none;width:100%;align-items:center;gap:8px;padding-top:12px;display:flex}.dshqr-configlabel{color:var(--dsw-alias-label-secondary);font-size:12px;line-height:18px;flex:1}.dshqr-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:64px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-apply{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 10px}.dshqr-apply:hover{background:var(--dsw-alias-interactive-bg-hover)}.dshqr-msg{color:var(--dsw-alias-label-caption);font-size:11px;line-height:16px;margin:0;text-align:center}.dshqr-note{color:var(--dsw-alias-label-tertiary);font-size:12px;line-height:18px;margin:0;text-align:center}.dshqr-error{color:var(--dsw-alias-state-error-primary);font-size:12px;line-height:18px;margin:0;text-align:center}@keyframes dshqrFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}@keyframes dshqrFadeOut{from{opacity:1;transform:none}to{opacity:0;transform:translateY(6px)}}.dshqr-actions{flex:none;width:100%;justify-content:center;gap:8px;display:flex}.dshqr-action{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);height:28px;color:var(--dsw-alias-label-primary);font:inherit;cursor:pointer;border-radius:7px;padding:0 12px}.dshqr-action:hover{background:var(--dsw-alias-interactive-bg-hover)}'
+const SETTINGS_CSS = '.dshqr-card{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-layer-3);border-radius:12px;list-style:none;transition:border-color .16s,background .16s}.dshqr-card:hover{border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-open{background:var(--dsw-alias-bg-layer-2);border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-header{appearance:none;width:100%;font:inherit;color:inherit;text-align:left;cursor:pointer;background:0 0;border:0;border-radius:12px;align-items:center;gap:12px;padding:14px 16px;display:flex}.dshqr-card-headtext{flex-direction:column;flex:1;gap:4px;min-width:0;display:flex}.dshqr-card-name{color:var(--dsw-alias-label-primary);font-size:15px;font-weight:600;line-height:1.4}.dshqr-card-desc{color:var(--dsw-alias-label-tertiary);font-size:13px;line-height:1.5}.dshqr-card-chevron{color:var(--dsw-alias-label-tertiary);flex:none;transition:transform .16s;font-size:12px}.dshqr-card-chevron-open{transform:rotate(180deg)}.dshqr-card-body{border-top:1px solid var(--dsw-alias-border-l2);margin:0 16px;padding:8px 0 12px}.dshqr-card-row{align-items:center;gap:10px;padding:8px 0;display:flex}.dshqr-card-label{color:var(--dsw-alias-label-secondary);font-size:13px;line-height:1.5;flex:1}.dshqr-card-input{border:1px solid var(--dsw-alias-border-l2);background:var(--dsw-alias-bg-base);width:90px;height:28px;color:var(--dsw-alias-label-secondary);font:inherit;border-radius:7px;padding:0 8px}.dshqr-card-footer{border-top:1px solid var(--dsw-alias-border-l2);justify-content:flex-end;align-items:center;gap:8px;padding:12px 0 4px;display:flex}.dshqr-card-msg{min-width:0;color:var(--dsw-alias-state-error-primary);flex:1;margin:0;font-size:12px;line-height:1.5}.dshqr-card-discard,.dshqr-card-save{appearance:none;font:inherit;cursor:pointer;border:1px solid #0000;border-radius:8px;padding:5px 14px;font-size:13px;line-height:1.5}.dshqr-card-discard{border-color:var(--dsw-alias-border-l2);color:var(--dsw-alias-label-secondary);background:0 0}.dshqr-card-discard:hover{color:var(--dsw-alias-label-primary);border-color:var(--dsw-alias-label-dimmed)}.dshqr-card-save{background:var(--dsw-alias-label-primary);color:var(--dsw-alias-bg-layer-3)}'
 function ConfigCard() {
+  const [open, setOpen] = React.useState(false)
   const [state, setState] = React.useState({ status: 'loading', port: '', days: '' })
   const [msg, setMsg] = React.useState('')
+  const [dirty, setDirty] = React.useState(false)
   React.useEffect(() => {
     host.call('get-config').then((c) => {
       setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays) })
     }).catch(() => setState({ status: 'error', port: '', days: '' }))
   }, [])
+  function reload() {
+    host.call('get-config').then((c) => {
+      setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays) })
+      setDirty(false)
+      setMsg('')
+    }).catch(() => {})
+  }
   function save() {
     const port = Number(state.port)
     const days = Number(state.days)
@@ -354,26 +363,33 @@ function ConfigCard() {
     if (!(days > 0 && days <= 3650)) { setMsg('Days must be 1-3650'); return }
     host.call('set-config', { port: port, sessionDays: days }).then((c) => {
       setState({ status: 'ready', port: String(c && c.port), days: String(c && c.sessionDays) })
-      setMsg('Saved')
+      setDirty(false)
+      setMsg('')
     }).catch(() => setMsg('Save failed'))
   }
-  return React.createElement('li', { className: 'dshqr-settings-card' },
-    React.createElement('div', { className: 'dshqr-settings-head' },
-      React.createElement('span', { className: 'dshqr-settings-title' }, 'QR connect'),
-      React.createElement('span', { className: 'dshqr-settings-sub' }, 'LAN reverse proxy for mobile access')
+  return React.createElement('li', { className: 'dshqr-card' + (open ? ' dshqr-card-open' : '') },
+    React.createElement('button', { type: 'button', className: 'dshqr-card-header', 'aria-expanded': open, onClick: () => setOpen(!open) },
+      React.createElement('span', { className: 'dshqr-card-headtext' },
+        React.createElement('span', { className: 'dshqr-card-name' }, 'QR connect'),
+        React.createElement('span', { className: 'dshqr-card-desc' }, dirty ? 'LAN reverse proxy for mobile access · unsaved changes' : 'LAN reverse proxy for mobile access')
+      ),
+      React.createElement('span', { className: 'dshqr-card-chevron' + (open ? ' dshqr-card-chevron-open' : '') }, '▾')
     ),
-    React.createElement('div', { className: 'dshqr-settings-row' },
-      React.createElement('label', { className: 'dshqr-settings-label' }, 'Proxy port'),
-      React.createElement('input', { className: 'dshqr-settings-input', type: 'number', min: 1, max: 65535, value: state.port, onChange: (e) => setState({ ...state, port: e.target.value }) })
-    ),
-    React.createElement('div', { className: 'dshqr-settings-row' },
-      React.createElement('label', { className: 'dshqr-settings-label' }, 'Session length (days)'),
-      React.createElement('input', { className: 'dshqr-settings-input', type: 'number', min: 1, max: 3650, value: state.days, onChange: (e) => setState({ ...state, days: e.target.value }) })
-    ),
-    React.createElement('div', { className: 'dshqr-settings-actions' },
-      React.createElement('button', { type: 'button', className: 'dshqr-settings-save', onClick: save }, 'Save'),
-      msg ? React.createElement('span', { className: 'dshqr-settings-msg' }, msg) : null
-    )
+    open ? React.createElement('div', { className: 'dshqr-card-body' },
+      React.createElement('div', { className: 'dshqr-card-row' },
+        React.createElement('label', { className: 'dshqr-card-label' }, 'Proxy port'),
+        React.createElement('input', { className: 'dshqr-card-input', type: 'number', min: 1, max: 65535, value: state.port, onChange: (e) => { setState({ ...state, port: e.target.value }); setDirty(true) } })
+      ),
+      React.createElement('div', { className: 'dshqr-card-row' },
+        React.createElement('label', { className: 'dshqr-card-label' }, 'Session length (days)'),
+        React.createElement('input', { className: 'dshqr-card-input', type: 'number', min: 1, max: 3650, value: state.days, onChange: (e) => { setState({ ...state, days: e.target.value }); setDirty(true) } })
+      ),
+      React.createElement('div', { className: 'dshqr-card-footer' },
+        msg ? React.createElement('span', { className: 'dshqr-card-msg' }, msg) : null,
+        React.createElement('button', { type: 'button', className: 'dshqr-card-discard', onClick: reload }, 'Reset'),
+        React.createElement('button', { type: 'button', className: 'dshqr-card-save', onClick: save }, 'Save')
+      )
+    ) : null
   )
 }
 return {
@@ -395,6 +411,7 @@ return {
       const [left, setLeft] = React.useState(30)
       const [days, setDays] = React.useState('30')
       const [msg, setMsg] = React.useState('')
+      const [copied, setCopied] = React.useState('')
       function buildUrls(info) {
         if (!info || !info.secret || !info.port) return { localUrl: null, publicUrl: null }
         const make = (host) => 'http://' + host + ':' + info.port + '/?auth=' + info.secret
@@ -440,6 +457,19 @@ return {
           setMsg('Session length: ' + (r && r.sessionDays) + ' days')
         }).catch(() => { setMsg('Failed to apply') })
       }
+      function copyLink() {
+        const url = state.localUrl
+        if (!url) { setCopied('No link yet'); return }
+        try {
+          if (navigator && navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(() => setCopied('Copied to clipboard'), () => setCopied('Copy failed'))
+          } else {
+            setCopied('Copy failed')
+          }
+        } catch (e) {
+          setCopied('Copy failed')
+        }
+      }
       function qrBlock(label, url) {
         if (!url) return null
         let svg = null
@@ -447,8 +477,7 @@ return {
         if (!svg) return null
         return React.createElement('div', { className: 'dshqr-block' },
           React.createElement('div', { className: 'dshqr-qr', dangerouslySetInnerHTML: { __html: svg } }),
-          React.createElement('span', { className: 'dshqr-kind' }, label),
-          React.createElement('span', { className: 'dshqr-url' }, url)
+          React.createElement('span', { className: 'dshqr-kind' }, label)
         )
       }
       const localBlock = state.status === 'ready' ? qrBlock('Local network', state.localUrl) : null
@@ -483,6 +512,11 @@ return {
             state.status === 'error' || !localBlock ? React.createElement('p', { className: 'dshqr-error' }, 'Reverse proxy is not ready. Try again in a moment.') :
             React.createElement(React.Fragment, null,
               React.createElement('p', { className: 'dshqr-count' }, 'New code in ' + left + 's'),
+              React.createElement('div', { className: 'dshqr-actions' },
+                React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: refresh }, 'Refresh'),
+                React.createElement('button', { type: 'button', className: 'dshqr-action', onClick: copyLink }, 'Copy link')
+              ),
+              copied ? React.createElement('p', { className: 'dshqr-msg' }, copied) : null,
               localBlock,
               publicBlock || React.createElement('p', { className: 'dshqr-note' }, 'Public IP unavailable'),
               React.createElement('div', { className: 'dshqr-config' },

@@ -110,14 +110,14 @@ server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listen
       }
     }
 
-    async function detectPublicIp(web) {
-      if (web === undefined) return null
+    async function detectPublicIp(shell) {
+      if (shell === undefined) return null
       try {
-        const res = await web.fetch({ url: 'https://api.ipify.org' })
-        if (res && res.statusCode >= 200 && res.statusCode < 300 && res.body && res.body.content) {
-          const candidate = res.body.content.trim()
-          if (/^(\d{1,3}\.){3}\d{1,3}$/.test(candidate) || candidate.indexOf(':') !== -1) return candidate
-        }
+        const command = "curl -s --max-time 5 https://api.ipify.org 2>/dev/null || curl -s --max-time 5 https://api64.ipify.org 2>/dev/null"
+        const spec = shell.resolve({ command: command, stdoutMaxBytes: 64 })
+        const res = await shell.run(spec)
+        const candidate = ((res && res.stdout && res.stdout.text) || '').trim()
+        if (/^(\d{1,3}\.){3}\d{1,3}$/.test(candidate) || candidate.indexOf(':') !== -1) return candidate
         return null
       } catch (err) {
         return null
@@ -172,8 +172,7 @@ server.listen(port, '0.0.0.0', function () { console.error('dsh-lan-proxy listen
 
     harness.handle('proxy-info', async () => {
       const shell = ctx.get('shell')
-      const web = ctx.get('web')
-      const results = await Promise.all([readSecret(), detectLocalIp(shell), detectPublicIp(web)])
+      const results = await Promise.all([readSecret(), detectLocalIp(shell), detectPublicIp(shell)])
       return { secret: results[0], ip: results[1], publicIp: results[2], port: configPort }
     })
 
