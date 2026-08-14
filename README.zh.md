@@ -47,31 +47,11 @@
 
 ## 安装
 
-使用内置的 `dsh plugin` 命令将其安装到 DSH profile —— 它会自动添加依赖并注册
-bundle：
-
 ```bash
-# 本地路径
-dsh plugin --profile web add file:/path/to/dsh-plugin-qr-connect
-
-# 在插件仓库目录内
-cd dsh-plugin-qr-connect && dsh plugin --profile web add file:.
-
-# 从 GitHub 安装
 dsh plugin --profile web add github:mervyn-teo/dsh-plugin-qr-connect
-
-# 从 npm 安装（发布后）
-dsh plugin --profile web add dsh-plugin-qr-connect
 ```
 
 然后重启 `dsh web` —— Host bundle 在启动时加载。
-
-卸载或更新：
-
-```bash
-dsh plugin --profile web remove dsh-plugin-qr-connect
-dsh plugin --profile web update dsh-plugin-qr-connect
-```
 
 默认配置在 `cordis.patch.yml`（`port`、`sessionDays`、`refreshSeconds`）。可在
 那里（或 profile 自带的 `cordis.patch.yml`）修改后重启，或在运行时通过配置卡片
