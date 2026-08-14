@@ -13,6 +13,12 @@
 带鉴权的反向代理，让同一网络（或公网）上的手机扫码后安全地打开 Web UI。它是
 一个持久化的 bundle 插件（Host 半边 + 浏览器半边），每次启动都会自动加载。
 
+## 演示
+
+<p align="center">
+  <img src="assets/demo.gif" alt="dsh-plugin-qr-connect 演示 — 点击二维码按钮、扫码、连接" width="360">
+</p>
+
 ## 功能
 
 - 添加一个全宽按钮（`sidebar.footer.action`，id `qr-connect`），堆叠在官方

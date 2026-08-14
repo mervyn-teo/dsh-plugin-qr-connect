@@ -15,6 +15,12 @@ footer. It runs a small auth-gated reverse proxy so a phone on the same network
 persistent bundle plugin (a host half plus a browser half) that loads on every
 boot.
 
+## Demo
+
+<p align="center">
+  <img src="assets/demo.gif" alt="dsh-plugin-qr-connect demo — click the QR button, scan, connect" width="360">
+</p>
+
 ## What it does
 
 - Adds a full-width button (`sidebar.footer.action`, id `qr-connect`) stacked
