@@ -1,23 +1,28 @@
 # dsh-plugin-qr-connect
 
+English | [中文](README.zh.md)
+
 A [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness) (DSH) dynamic
-Cordis plugin that adds a small **QR-code button above the Settings button** in the
-sidebar footer. Tap it to show a QR code of the web UI's local network address, so
-a phone on the same network can scan it and open the web UI without typing the URL.
+Cordis plugin that adds a **QR-code button above the Settings button** in the
+sidebar footer. It runs a small auth-gated reverse proxy so a phone on the same
+network (or the internet) can scan a QR code and open the web UI securely.
 
 ## What it does
 
-- Adds a full-width button (`sidebar.footer.action`, `id: qr-connect`) that is
-  stacked **above** the shipped Plugins button, both above the Settings row.
-- On click, opens a panel that fades in/out with **two** QR codes plus their
-  URLs:
-  - **Local network** — the machine's primary non-loopback IPv4 address, so a
-    phone on the same LAN can reach the web UI (`http://<lan-ip>:<port>/`).
-  - **Public internet** — the WAN/public IP (via `api.ipify.org`), so a device
-    outside the LAN can reach the host when port-forwarded.
-- Each QR is generated entirely client-side with a self-contained encoder
-  (byte mode, error-correction level M, auto version, standard masking) — no
-  external library and no network call to a QR service.
+- Adds a full-width button (`sidebar.footer.action`, id `qr-connect`) stacked
+  **above** the shipped Plugins button.
+- Opens a fading panel with **two** QR codes:
+  - **Local network** — `http://<lan-ip>:<port>/?auth=<secret>`.
+  - **Public internet** — `http://<public-ip>:<port>/?auth=<secret>` (blue).
+- The reverse proxy (a child `node` process on `0.0.0.0:<port>`) validates the
+  secret, issues a session cookie (default 30 days), and forwards to the
+  loopback web UI.
+- The secret rotates every 30s by default and the QR refreshes to match
+  (configurable; `0` disables auto-refresh).
+- Click a QR to copy its link; the public QR has an info tooltip.
+- A **QR connect** card under Settings → Plugins configures the proxy port,
+  session length, and refresh interval.
+- English and Chinese UI via DSH's locale service.
 
 ## Files
 
@@ -31,10 +36,10 @@ a phone on the same network can scan it and open the web UI without typing the U
 
 This is a **dynamic Cordis plugin**: it runs inside a live DSH session and does
 not survive a process restart. Load it from the DSH web GUI (or your agent) with
-the `cordis_define` / `cordis_run` flow, passing the two halves verbatim:
+the `cordis_define` / `cordis_run` flow:
 
-1. In DSH, define a new plugin with `code.host` = the full contents of `host.js`
-   and `code.client` = the full contents of `client.js` (an `idPrefix` such as
+1. Define a new plugin with `code.host` = the full contents of `host.js` and
+   `code.client` = the full contents of `client.js` (an `idPrefix` such as
    `qrconn` is enough — the host allocates the final ID).
 2. Run the returned package and approve the client half in the UI.
 
@@ -44,19 +49,17 @@ are not standalone Node/browser modules), so pass their contents as-is — do no
 
 ## Requirements
 
-- DSH with the `shell` service mounted (used by the Host half to read
-  `ip addr` / `hostname -I`). On Linux and macOS the standard commands are used;
-  if neither is available the button falls back to the browser's own host.
-- The device that scans the QR must be on the same network as the DSH host, and
-  the DSH web server must be reachable on that interface.
+- DSH with the `shell`, `subprocess`, `fs`, and `webServer` services mounted.
+- `node` on the DSH host's `PATH`, and `curl` for the public-IP lookup.
+- The scanning device must be able to reach the proxy port (a host firewall may
+  need an allow rule); the public QR also needs internet reachability
+  (port-forwarding).
 
-## How it works
+## Security
 
-```
-Host  : harness.handle('lan-ip') -> shell.run(ip addr / hostname -I) -> { ip }
-Client: button -> host.call('lan-ip') -> URL = protocol + ip + port + pathname
-        -> self-contained QR encoder -> SVG rendered in the panel
-```
+The proxy exposes the full agent shell to anyone who can reach the port, gated
+only by the 30s secret and the session cookie. Use a short session length and
+treat this as a trusted-network convenience, not a hardened remote-access layer.
 
 ## License
 

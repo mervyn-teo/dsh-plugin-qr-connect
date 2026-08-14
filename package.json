@@ -19,6 +19,7 @@
     "host.js",
     "client.js",
     "README.md",
+    "README.zh.md",
     "LICENSE"
   ],
   "dsh": {
