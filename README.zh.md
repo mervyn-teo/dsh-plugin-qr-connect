@@ -16,7 +16,7 @@
 ## 演示
 
 <p align="center">
-  <img src="assets/demo.gif" alt="dsh-plugin-qr-connect 演示 — 点击二维码按钮、扫码、连接" width="360">
+  <img src="assets/demo-v2.gif" alt="dsh-plugin-qr-connect 演示 — 点击二维码按钮、扫码、连接" width="360">
 </p>
 
 ## 功能

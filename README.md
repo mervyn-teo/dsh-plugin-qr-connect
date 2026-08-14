@@ -18,7 +18,7 @@ boot.
 ## Demo
 
 <p align="center">
-  <img src="assets/demo.gif" alt="dsh-plugin-qr-connect demo — click the QR button, scan, connect" width="360">
+  <img src="assets/demo-v2.gif" alt="dsh-plugin-qr-connect demo — click the QR button, scan, connect" width="360">
 </p>
 
 ## What it does
