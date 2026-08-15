@@ -60,10 +60,13 @@ dsh plugin --profile web add github:mervyn-teo/dsh-plugin-qr-connect
 
 ## 依赖
 
-- DSH 需要挂载 `shell`、`subprocess`、`fs`、`webServer` 服务。
-- DSH 宿主的 `PATH` 中有 `node`，并有 `curl` 用于查询公网 IP。
+- DSH 需要挂载 `subprocess`、`fs`、`webServer` 服务。
+- DSH 宿主能访问公网以查询公网 IP（`https://api.ipify.org`）。
 - 扫码设备需要能访问代理端口（宿主机防火墙可能需要放行）；公网二维码还需要
   公网可访问（端口转发）。
+
+本地 IP 与公网 IP 的探测在进程内完成（不再依赖 `ip`/`curl`/shell 命令），手动
+轮换密钥通过子进程 stdin 通知，因此 Host 半边可在 Windows、macOS、Linux 上运行。
 
 ## 安全
 

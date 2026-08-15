@@ -64,11 +64,16 @@ same-origin routes the browser half uses: `GET /__qr/info`,
 
 ## Requirements
 
-- DSH with the `shell`, `subprocess`, `fs`, and `webServer` services mounted.
-- `node` on the DSH host's `PATH`, and `curl` for the public-IP lookup.
+- DSH with the `subprocess`, `fs`, and `webServer` services mounted.
+- Internet access from the DSH host for the public-IP lookup
+  (`https://api.ipify.org`).
 - The scanning device must be able to reach the proxy port (a host firewall may
   need an allow rule); the public QR also needs internet reachability
   (port-forwarding).
+
+Local-IP and public-IP detection run in-process (no `ip`/`curl`/shell commands),
+and manual secret rotation signals the proxy child over its stdin, so the host
+half works on Windows, macOS, and Linux.
 
 ## Security
 
